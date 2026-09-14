@@ -3,8 +3,8 @@
 
 title: "Axxes Java Refresher"
 description: "A comprehensive Java knowledge base for modern software developers at Axxes"
-baseurl: ""
-url: "https://axxes.com/java-training"
+baseurl: "/JAVA_TRAINING"
+url: "https://tmassart873.github.io"
 
 # Theme
 theme: null
