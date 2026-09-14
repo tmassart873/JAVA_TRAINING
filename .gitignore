@@ -1,0 +1,22 @@
+# Jekyll
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build
+*.class
+*.jar
+*.log
+node_modules/
+
+# OS
+Thumbs.db
+desktop.ini

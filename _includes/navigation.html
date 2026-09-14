@@ -1,0 +1,21 @@
+<nav>
+    <div class="nav-container">
+        <div class="nav-brand">AXXES JAVA</div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>HOME</a></li>
+            <li><a href="{{ '/docs/01-java-fundamentals' | relative_url }}" {% if page.url contains '01-java-fundamentals' %}class="active"{% endif %}>FUNDAMENTALS</a></li>
+            <li><a href="{{ '/docs/02-object-oriented-java' | relative_url }}" {% if page.url contains '02-object-oriented-java' %}class="active"{% endif %}>OOP</a></li>
+            <li><a href="{{ '/docs/03-modern-java' | relative_url }}" {% if page.url contains '03-modern-java' %}class="active"{% endif %}>MODERN JAVA</a></li>
+            <li><a href="{{ '/docs/04-equals-hashcode' | relative_url }}" {% if page.url contains '04-equals-hashcode' %}class="active"{% endif %}>EQUALS/HASHCODE</a></li>
+            <li><a href="{{ '/docs/05-collections-generics' | relative_url }}" {% if page.url contains '05-collections-generics' %}class="active"{% endif %}>COLLECTIONS</a></li>
+            <li><a href="{{ '/docs/06-functional-java' | relative_url }}" {% if page.url contains '06-functional-java' %}class="active"{% endif %}>STREAMS</a></li>
+            <li><a href="{{ '/docs/07-strings' | relative_url }}" {% if page.url contains '07-strings' %}class="active"{% endif %}>STRINGS</a></li>
+            <li><a href="{{ '/docs/08-exceptions' | relative_url }}" {% if page.url contains '08-exceptions' %}class="active"{% endif %}>EXCEPTIONS</a></li>
+            <li><a href="{{ '/docs/09-java-io' | relative_url }}" {% if page.url contains '09-java-io' %}class="active"{% endif %}>IO</a></li>
+            <li><a href="{{ '/docs/10-jvm-fundamentals' | relative_url }}" {% if page.url contains '10-jvm-fundamentals' %}class="active"{% endif %}>JVM</a></li>
+            <li><a href="{{ '/docs/11-exercises' | relative_url }}" {% if page.url contains '11-exercises' %}class="active"{% endif %}>EXERCISES</a></li>
+            <li><a href="{{ '/docs/12-interview-questions' | relative_url }}" {% if page.url contains '12-interview-questions' %}class="active"{% endif %}>INTERVIEW Q</a></li>
+        </ul>
+    </div>
+</nav>

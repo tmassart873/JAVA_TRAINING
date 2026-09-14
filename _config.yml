@@ -1,0 +1,54 @@
+# Axxes Java Refresher Course
+# GitHub Pages Jekyll Configuration
+
+title: "Axxes Java Refresher"
+description: "A comprehensive Java knowledge base for modern software developers at Axxes"
+baseurl: ""
+url: "https://axxes.com/java-training"
+
+# Theme
+theme: null
+
+# Markdown processor
+markdown: kramdown
+
+# Build settings
+safe: false
+lsi: false
+excerpt_separator: "\n\n"
+
+# Collections for documentation
+collections:
+  docs:
+    output: true
+    permalink: /:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: "docs"
+    values:
+      layout: "default"
+      type: "docs"
+
+# Author info
+author:
+  name: "Axxes Technical Training"
+  email: "training@axxes.com"
+
+# Brand colors
+brand:
+  primary: "#FF5200"  # Axxes Orange
+  dark: "#000000"     # Black
+  white: "#FFFFFF"    # White
+  light_gray: "#E8E8E8"
+  medium_gray: "#4A4A4A"
+  dark_gray: "#2A2A2A"
+
+# Build exclusions
+exclude:
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
+  - README_DEV.md

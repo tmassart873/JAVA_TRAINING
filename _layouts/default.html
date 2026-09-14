@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navigation -->
+        {% include navigation.html %}
+
+        <!-- Main content -->
+        <main>
+            {% if page.layout == 'default' and page.type == 'docs' %}
+                <div class="page-header">
+                    <div class="container">
+                        <h1>{{ page.title }}</h1>
+                        {% if page.subtitle %}
+                            <p class="page-subtitle">{{ page.subtitle }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="container">
+                {{ content }}
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Training Modules</h4>
+                    <a href="{{ '/docs/01-java-fundamentals' | relative_url }}">Java Fundamentals</a>
+                    <a href="{{ '/docs/02-object-oriented-java' | relative_url }}">OOP Java</a>
+                    <a href="{{ '/docs/03-modern-java' | relative_url }}">Modern Java</a>
+                    <a href="{{ '/docs/04-equals-hashcode' | relative_url }}">equals() & hashCode()</a>
+                    <a href="{{ '/docs/05-collections-generics' | relative_url }}">Collections</a>
+                </div>
+                <div class="footer-section">
+                    <h4>More Modules</h4>
+                    <a href="{{ '/docs/06-functional-java' | relative_url }}">Functional Java</a>
+                    <a href="{{ '/docs/07-strings' | relative_url }}">Strings</a>
+                    <a href="{{ '/docs/08-exceptions' | relative_url }}">Exceptions</a>
+                    <a href="{{ '/docs/09-java-io' | relative_url }}">Java IO</a>
+                    <a href="{{ '/docs/10-jvm-fundamentals' | relative_url }}">JVM</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <a href="{{ '/docs/11-exercises' | relative_url }}">Exercises</a>
+                    <a href="{{ '/docs/12-interview-questions' | relative_url }}">Interview Questions</a>
+                    <a href="{{ '/docs/13-references' | relative_url }}">References</a>
+                    <a href="https://www.axxes.com">Axxes Website</a>
+                </div>
+                <div class="footer-section">
+                    <h4>About</h4>
+                    <p>A comprehensive Java refresher course designed for developers at Axxes. Based on modern Java 21 best practices.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Axxes. Java Refresher Training. All rights reserved.</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5em;">Based on Baeldung Java tutorials and official Oracle Java documentation.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ '/assets/js/navigation.js' | relative_url }}"></script>
+</body>
+</html>
