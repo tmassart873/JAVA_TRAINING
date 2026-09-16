@@ -12,6 +12,11 @@ theme: null
 # Markdown processor
 markdown: kramdown
 
+# Pretty permalinks (no .html extension, trailing slash) — required so the
+# page.url comparisons in _layouts/default.html and _includes/sidebar.html
+# (current lesson, prev/next links, mark-complete) actually match.
+permalink: pretty
+
 # Build settings
 safe: false
 lsi: false

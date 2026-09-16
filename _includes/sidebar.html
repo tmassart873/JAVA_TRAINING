@@ -24,7 +24,7 @@
                 {% assign section_number = section_number | plus: 1 %}
                 {% assign section_has_active = false %}
                 {% for lesson in section.lessons %}
-                    {% assign lesson_url = "/docs/" | append: lesson.doc %}
+                    {% assign lesson_url = "/docs/" | append: lesson.doc | append: "/" %}
                     {% if page.url == lesson_url %}{% assign section_has_active = true %}{% endif %}
                 {% endfor %}
                 {% assign section_open = false %}
@@ -38,7 +38,7 @@
                     </summary>
                     <ul class="sidebar-lesson-list">
                         {% for lesson in section.lessons %}
-                            {% assign lesson_url = "/docs/" | append: lesson.doc %}
+                            {% assign lesson_url = "/docs/" | append: lesson.doc | append: "/" %}
                             {% assign is_active = false %}
                             {% if page.url == lesson_url %}{% assign is_active = true %}{% endif %}
                             <li>
