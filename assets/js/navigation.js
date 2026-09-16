@@ -271,6 +271,40 @@
     });
   }
 
+  function initChecklists() {
+    document.querySelectorAll('.checklist[data-checklist-id]').forEach(function (list) {
+      var storageKey = 'javaRefresherChecklist:' + list.getAttribute('data-checklist-id');
+      var checked = [];
+      try {
+        var raw = localStorage.getItem(storageKey);
+        var parsed = raw ? JSON.parse(raw) : [];
+        if (Array.isArray(parsed)) checked = parsed;
+      } catch (e) { checked = []; }
+
+      function save() {
+        try { localStorage.setItem(storageKey, JSON.stringify(checked)); } catch (e) { /* ignore */ }
+      }
+
+      list.querySelectorAll('input[type="checkbox"][data-check-id]').forEach(function (box) {
+        var id = box.getAttribute('data-check-id');
+        var isChecked = checked.indexOf(id) !== -1;
+        box.checked = isChecked;
+        box.closest('li').classList.toggle('is-checked', isChecked);
+
+        box.addEventListener('change', function () {
+          var idx = checked.indexOf(id);
+          if (box.checked && idx === -1) {
+            checked.push(id);
+          } else if (!box.checked && idx !== -1) {
+            checked.splice(idx, 1);
+          }
+          box.closest('li').classList.toggle('is-checked', box.checked);
+          save();
+        });
+      });
+    });
+  }
+
   function initSmoothAnchors() {
     document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
       anchor.addEventListener('click', function (e) {
@@ -291,6 +325,7 @@
     initMarkComplete();
     updateProgressUI();
     initQuizzes();
+    initChecklists();
     initCodeCopyButtons();
     initSmoothAnchors();
   });
