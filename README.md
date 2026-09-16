@@ -12,84 +12,42 @@ This is an **internal training resource** for Java developers working with moder
 - **Common mistakes** – pitfalls developers face in production
 - **Interview preparation** – 50+ technical questions with detailed answers
 - **Practical exercises** – hands-on coding from basic to advanced
+- **Per-lesson quizzes** – a short quiz at the end of every lesson to check understanding
+- **Progress tracking** – a sidebar progress bar that tracks which lessons you've completed, saved in your browser
 
 ## Course Structure
 
-The course is organized into **10 core learning modules** plus **exercises, interview questions, and references**.
+The course is organized into **17 lessons across 6 sections**, plus interview prep and reference material. The sidebar navigation, previous/next lesson links, and progress tracking are all generated from this structure (`_data/course.yml`), so it stays in sync automatically as lessons are added, removed, or reordered.
 
 ```
-1. Java Fundamentals
-   ├─ JVM/JRE/JDK
-   ├─ Compilation and execution
-   ├─ Primitives and references
-   └─ Control flow and loops
+1. Foundations
+   ├─ Java Fundamentals
+   ├─ Object-Oriented Java
+   ├─ Casting, instanceof & Copying
+   ├─ Immutability & Object Relationships
+   ├─ Modern Java (17+)
+   └─ equals() & hashCode()
 
-2. Object-Oriented Java
-   ├─ Classes and objects
-   ├─ Inheritance and polymorphism
-   ├─ Interfaces and abstract classes
-   └─ Design principles
+2. Collections & Data
+   ├─ Collections & Generics
+   ├─ Arrays, Iterators & Conversions
+   └─ Functional Java & Streams
 
-3. Modern Java (17+)
-   ├─ Records
-   ├─ Sealed classes
-   ├─ Pattern matching
-   └─ Enums and Optional
+3. Language Features
+   ├─ Strings
+   ├─ Exceptions
+   └─ Java IO
 
-4. equals() & hashCode()
-   ├─ The contract
-   ├─ HashMap behavior
-   └─ Mutable key problems
+4. The JVM
+   └─ JVM Fundamentals
 
-5. Collections & Generics
-   ├─ Lists, Sets, Maps
-   ├─ Generic types
-   └─ Type bounds and wildcards
+5. Advanced Topics
+   └─ Modules, Reflection & Java 21
 
-6. Functional Java & Streams
-   ├─ Functional interfaces
-   ├─ Lambda expressions
-   ├─ Stream API
-   └─ Collectors and performance
-
-7. Strings
-   ├─ Immutability
-   ├─ String pool
-   ├─ Operations
-   └─ StringBuilder
-
-8. Exceptions
-   ├─ Hierarchy
-   ├─ Checked vs unchecked
-   ├─ Try-with-resources
-   └─ Custom exceptions
-
-9. Java IO
-   ├─ Reading and writing files
-   ├─ Streams
-   ├─ NIO2
-   └─ Serialization
-
-10. JVM Fundamentals
-    ├─ Bytecode execution
-    ├─ Stack vs heap
-    ├─ Class loading
-    └─ Garbage collection
-
-11. Practical Exercises
-    ├─ 6 exercises from basic to advanced
-    ├─ Real-world scenarios
-    └─ Solutions and explanations
-
-12. Interview Questions
-    ├─ 20+ technical questions
-    ├─ Detailed answers
-    └─ Key insights
-
-13. References & Resources
-    ├─ Baeldung articles
-    ├─ Official documentation
-    └─ Further reading
+6. Practice & Reference
+   ├─ Practical Exercises
+   ├─ Interview Questions
+   └─ References
 ```
 
 ## Target Audience
@@ -175,12 +133,6 @@ Deploy to GitHub Pages by pushing to a repository.
 ### Online
 Visit the deployed site (if hosted) and navigate through chapters.
 
-### Local Development
-1. Clone the repository
-2. Install Jekyll: `gem install jekyll bundler`
-3. Run locally: `jekyll serve`
-4. Open http://localhost:4000
-
 ## Content Quality
 
 Every section includes:
@@ -238,22 +190,6 @@ This course synthesizes Baeldung's "Get Started with Java" series with:
 
 See Chapter 13 for complete references and resource links.
 
-## Contributing
-
-This is an internal Axxes training resource. To suggest improvements:
-1. Note the chapter and topic
-2. Describe the improvement
-3. Submit via internal channels
-
-## License
-
-Internal Axxes training material. Not for public distribution.
-
-## Support
-
-For questions or clarifications:
-- Email: [training@axxes.com]
-- Internal: Axxes training team
 
 ---
 
@@ -270,7 +206,7 @@ For questions or clarifications:
 
 ---
 
-**Last Updated**: September 2024  
+**Last Updated**: September 2026
 **Java Version**: Java 21 LTS  
 **Course Version**: 1.0
 

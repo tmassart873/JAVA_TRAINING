@@ -8,7 +8,8 @@
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       var parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
+      if (!Array.isArray(parsed)) return [];
+      return parsed.filter(function (slug) { return typeof slug === 'string' && slug.length > 0; });
     } catch (e) {
       return [];
     }
@@ -20,16 +21,37 @@
     } catch (e) { /* localStorage unavailable — degrade silently */ }
   }
 
+  function getValidLessonSlugs() {
+    var slugs = [];
+    document.querySelectorAll('.sidebar-lesson[data-lesson]').forEach(function (link) {
+      var slug = link.getAttribute('data-lesson');
+      if (slug && slugs.indexOf(slug) === -1) slugs.push(slug);
+    });
+    return slugs;
+  }
+
   function updateProgressUI() {
     var shell = document.querySelector('.app-shell');
     if (!shell) return;
     var total = parseInt(shell.getAttribute('data-total-lessons'), 10) || 0;
-    var completed = getCompleted();
+    var storedCompleted = getCompleted();
+    var validSlugs = getValidLessonSlugs();
+
+    // Drop stale/deleted lesson ids and duplicates so corrupted or outdated
+    // localStorage data can never inflate the percentage above what the
+    // current course actually contains.
+    var completed = validSlugs.filter(function (slug) {
+      return storedCompleted.indexOf(slug) !== -1;
+    });
+    if (completed.length !== storedCompleted.length) {
+      setCompleted(completed);
+    }
 
     var fill = document.getElementById('sidebarProgressFill');
     var percentLabel = document.getElementById('sidebarProgressPercent');
     var bar = document.getElementById('sidebarProgressBar');
     var percent = total > 0 ? Math.round((completed.length / total) * 100) : 0;
+    percent = Math.max(0, Math.min(100, percent));
 
     if (fill) fill.style.width = percent + '%';
     if (percentLabel) percentLabel.textContent = percent + '%';
