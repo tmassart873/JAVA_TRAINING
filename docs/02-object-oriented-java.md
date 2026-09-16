@@ -214,7 +214,7 @@ public class Order {
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>this() and super() Must Be the First Statement</div>
 
 A constructor may call `this(...)` (another constructor in the same class) or `super(...)` (the parent's constructor) — but **never both**, and whichever you use must be the very first statement:
@@ -229,7 +229,7 @@ public Order(String id) {
 If you don't explicitly call either, the compiler silently inserts a no-argument `super()` call for you before your constructor body runs. This is why a subclass fails to compile if its parent has no no-argument constructor and the subclass doesn't explicitly call `super(...)` with matching arguments.
 </div>
 
-<div class="callout modern">
+<div class="callout modern" markdown="1">
 <div class="callout-title"><span>🚀</span>Modern Java: Records</div>
 
 In Java 16+, use records for immutable data classes:
@@ -310,7 +310,7 @@ class DatabaseHelper {  // No modifier = package-private
 // Can only use from same package
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Top-Level Classes Can Only Be public or Package-Private</div>
 
 The four access levels above apply to **members** (fields, methods, constructors, and nested classes). A **top-level class** (one directly in a `.java` file, not nested inside another class) can only be declared `public` or left package-private — `private` and `protected` are not legal on a top-level class:
@@ -384,7 +384,7 @@ public class Product {
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Getters/Setters Pitfall</div>
 
 Don't expose mutable fields through getters:
@@ -466,7 +466,7 @@ public class Bird extends Animal {
 }
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Overloading vs. Overriding — Side by Side</div>
 
 These two terms sound similar but describe opposite ideas, and mixing them up is one of the most common OOP confusions:
@@ -608,7 +608,7 @@ logger.log("Hello");
 
 Static interface methods are **not inherited** by implementing classes — they must be called via the interface name (`Logger.console()`), never via an instance.
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>The Diamond Problem With Default Methods</div>
 
 If a class implements two interfaces that each declare the **same default method**, the compiler refuses to guess which one you meant — you get a compile error and must resolve it explicitly:
@@ -758,7 +758,7 @@ public class Order {
 
 **Prefer composition** in modern Java. Inheritance is rigid; composition is flexible.
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>HAS-A Has Two Flavors: Aggregation vs. Composition</div>
 
 "HAS-A" is often treated as one relationship, but there's an important distinction in how tightly the two objects' lifecycles are bound. See [Immutability & Object Relationships](../15-immutability-and-relationships/#association-aggregation-and-composition) for the full breakdown of association, aggregation, and composition — including why it matters for who is responsible for creating/destroying the related object.
@@ -799,7 +799,7 @@ OrderProcessor.ValidationResult result = new OrderProcessor.ValidationResult(tru
 
 This differs from a **non-static (inner) class**, which *does* hold an implicit reference to its enclosing instance and requires one to be constructed (`outer.new Inner()`) — inner classes are less common in everyday backend code and are mostly used for tight coupling to a specific outer instance (e.g., a custom `Iterator` implementation returned from a collection class).
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Effectively Final Variables and Lambda Capture</div>
 
 A lambda (or anonymous class) can only capture local variables that are **effectively final** — never reassigned after initialization, even if not explicitly marked `final`:

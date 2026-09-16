@@ -63,7 +63,7 @@ Animal animal2 = new Cat();
 Dog dog2 = (Dog) animal2;     // Compiles fine, but throws ClassCastException at runtime!
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>The Compiler Can't Save You From a Bad Downcast</div>
 
 The compiler only checks that the cast is *plausible* given the declared types — it cannot know the actual runtime type. A bad downcast compiles cleanly and blows up in production the first time it executes with the wrong object:
@@ -121,7 +121,7 @@ if (!(obj instanceof String str)) {
 System.out.println(str.length());
 ```
 
-<div class="callout modern">
+<div class="callout modern" markdown="1">
 <div class="callout-title"><span>🚀</span>Modern Java: Pattern Matching in switch (Java 21)</div>
 
 Java 21 extends the same idea to `switch`, letting you branch on type directly:
@@ -220,7 +220,7 @@ public class Address implements Cloneable {
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Why Cloneable Is Best Avoided</div>
 
 - `Cloneable` is a **marker interface** — it has no `clone()` method of its own. It only flips a runtime flag that `Object.clone()` checks; if you forget to implement it, `Object.clone()` throws `CloneNotSupportedException` at runtime, not compile time.

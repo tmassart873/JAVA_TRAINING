@@ -128,7 +128,7 @@ try (BufferedReader reader = new BufferedReader(new FileReader("file.txt"))) {
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Files.lines() Must Be Closed — It's Backed by a File Handle</div>
 
 Unlike most streams, `Files.lines()` opens a file handle that stays open for the life of the stream — always use it inside try-with-resources (`try (Stream<String> lines = Files.lines(path))`), not as a bare expression, or you'll leak file handles.
@@ -424,7 +424,7 @@ try (ObjectInputStream ois =
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Never Deserialize Untrusted Data</div>
 
 `ObjectInputStream.readObject()` reconstructs objects by instantiating classes found on the classpath based purely on data in the stream — before any application-level validation gets a chance to run. A crafted malicious stream can trigger unintended constructors, `readObject()` overrides, or `finalize()` methods on classes already present in your dependencies, potentially leading to remote code execution ("Java deserialization gadget chains" is the well-known name for this class of vulnerability). Never call `readObject()` on data from an untrusted source (uploaded files, network input, unauthenticated clients) — prefer safer serialization formats (JSON, Protocol Buffers) for anything crossing a trust boundary, and if you must use Java serialization, validate the class allowlist with `ObjectInputFilter` (Java 9+).

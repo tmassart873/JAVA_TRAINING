@@ -193,7 +193,7 @@ try (
 // Both reader and buffered are automatically closed
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Resources Close in Reverse Declaration Order</div>
 
 With multiple resources declared in one `try (...)`, they are closed in the **reverse** of the order they were declared — the last-opened resource is closed first, mirroring how you'd normally want to tear things down (close the wrapper before the thing it wraps):

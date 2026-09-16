@@ -206,7 +206,7 @@ java -XX:+UseConcMarkSweepGC MyApp  # CMS (concurrent)
 
 ## Class Loading
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Already Covered: JVM vs. JRE vs. JDK</div>
 
 The difference between the JVM, JRE, and JDK is covered in depth in [Java Fundamentals](../01-java-fundamentals/#jvm-jre-jdk) — see that section for the full comparison. This lesson focuses on what happens *inside* the JVM once it's running.
@@ -289,7 +289,7 @@ Application ClassLoader asked to load "com.example.MyClass"
 
 This delegation model exists specifically for security and consistency: it guarantees a class like `java.lang.String` is always loaded by the trusted Bootstrap loader, so application code can never shadow core JDK classes by defining its own `java.lang.String` and having it picked up instead.
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>ClassNotFoundException vs. NoClassDefFoundError</div>
 
 These sound similar but signal different problems:

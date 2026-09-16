@@ -214,7 +214,7 @@ buckets[2]: [("Java", 85) -> ("Rust", 25)]   // Collision: both hash to bucket 2
 buckets[3]: [("Python", 90)]
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>HashSet Is Just a HashMap in Disguise</div>
 
 `HashSet` is internally implemented as a `HashMap` where every element is stored as a **key**, mapped to a single shared dummy value. This is why `HashSet` has the exact same performance characteristics (average O(1), same load-factor/treeification behavior) and the same requirement that elements correctly implement `equals()`/`hashCode()`.
@@ -462,7 +462,7 @@ products.add(new Product("A", 10));
 Collections.sort(products);  // Sorts by price (natural order)
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>compareTo() Should Be Consistent With equals()</div>
 
 The `Comparable` contract strongly recommends (though doesn't strictly enforce at compile time) that `x.compareTo(y) == 0` should imply `x.equals(y) == true`. Violating this doesn't break `compareTo()` itself, but silently corrupts sorted collections like `TreeSet`/`TreeMap`, which use `compareTo()` — **not** `equals()` — to decide whether two elements are "the same":

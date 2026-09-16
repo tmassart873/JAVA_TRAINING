@@ -63,7 +63,7 @@ module com.example.app {
 }
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>exports vs. opens</div>
 
 `exports` makes a package's public API visible to code that `requires` the module — normal compile-time and runtime access. `opens` is specifically for **reflective** access (frameworks like Hibernate or Spring that need to read/set private fields via reflection) without also granting normal compile-time visibility. A package can be `opens`-only (reflection-only, no direct compile-time use) or both.
@@ -128,7 +128,7 @@ discountMethod.invoke(product, 10.0);   // Calls the private applyDiscount(10.0)
 - **Serialization libraries** (Jackson, Gson) — read/write object fields to/from JSON without every field needing a public getter/setter.
 - **Testing frameworks** — JUnit uses reflection to discover and invoke `@Test`-annotated methods.
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Reflection's Costs: Use It Sparingly in Application Code</div>
 
 Reflection trades away several things you normally get for free:
@@ -183,13 +183,13 @@ void increment() {
 }
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Why This Exists: Lowering the Beginner Barrier</div>
 
 Explaining `public static void main(String[] args)` to someone on day one of learning Java requires explaining access modifiers, static vs. instance, arrays, and the entry-point convention — all before they've written a single line of "real" logic. This feature (and the closely related simplified `System.out.println` → eventually just needing an implicit import in some tooling) exists purely to let beginners and quick scripts start with minimal ceremony, while the traditional full form remains exactly as valid and is still what real multi-class applications use.
 </div>
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Preview Feature — Check Your JDK Version</div>
 
 This feature was introduced as a **preview** in JDK 21 (requiring `--enable-preview` to compile and run) and refined across subsequent JDK preview cycles before finalization. If you try this on JDK 21 without the preview flag, or on an older JDK, it won't compile. Always check which JDK version your project targets before relying on very recent syntax like this in real code.

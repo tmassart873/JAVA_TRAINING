@@ -450,7 +450,7 @@ String upperViaStream = "hello".chars()
     .collect(Collectors.joining());  // "HELLO" — illustrative; toUpperCase() alone is simpler for this case
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>chars() Produces int Code Points, Not char</div>
 
 `IntStream` elements from `chars()` are `int` values (UTF-16 code units), not `char` — you must cast (`(char) c`) before treating one as a character, and comparisons like `"aeiou".indexOf(c)` work because `indexOf(int)` accepts a code point directly.
@@ -501,7 +501,7 @@ Point p = new Point(3, 4);
 System.out.println(p);  // "Point[x=3, y=4]" — generated automatically
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Never Include Sensitive Data in toString()</div>
 
 `toString()` output routinely ends up in logs, exception messages, and debugger views — places you don't fully control the audience for. Never include passwords, tokens, national ID numbers, or other sensitive fields:

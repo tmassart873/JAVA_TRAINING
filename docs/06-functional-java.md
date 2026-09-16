@@ -102,7 +102,7 @@ Runnable task = () -> System.out.println("Task executed");
 Callable<Integer> computation = () -> 42;
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Runnable vs. Supplier vs. Callable</div>
 
 These three look similar but solve different problems: `Runnable.run()` takes nothing and returns nothing (fire-and-forget, and the classic type for passing work to a `Thread`); `Supplier<T>.get()` takes nothing but returns a value; `Callable<V>.call()` also returns a value but — unlike both of the others — is allowed to throw a checked exception, which is exactly why `ExecutorService` submission methods are built around it instead of `Supplier`.
@@ -141,7 +141,7 @@ Consumer<String> both = print.andThen(log);
 both.accept("event");  // prints "event", then "LOG: event"
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>andThen() Order Differs Between Function and Consumer</div>
 
 For `Function`, `f.andThen(g)` means "apply `f`, feed its **result** into `g`." For `Consumer`, `c1.andThen(c2)` means "run `c1`, then run `c2`, both on the **same original input**" — there's no result to pass along since `Consumer` returns nothing. Don't assume the two behave identically just because the method name matches.
@@ -221,7 +221,7 @@ downloader.download(
 
 Before Java 8, this pattern required an anonymous inner class implementing a single-method interface (the classic `new Runnable() { public void run() { ... } }` idiom) — lambdas are simply a much more concise way to supply the same "behavior as data" that callbacks have always relied on.
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Functional Programming Principles, Briefly</div>
 
 Java isn't a purely functional language, but lambdas and streams borrow several ideas worth naming:
@@ -464,7 +464,7 @@ MinMax range = Stream.of(5, 3, 9, 1, 7)
     ));
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>toMap() Without a Merge Function Throws on Duplicate Keys</div>
 
 ```java

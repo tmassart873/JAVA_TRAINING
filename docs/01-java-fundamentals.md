@@ -230,7 +230,7 @@ public static void main(String[] args) {
 
 `main` may also be declared with varargs — `public static void main(String... args)` — because varargs *is* an array under the hood (see [Varargs](#varargs) below). Both signatures are valid JVM entry points. You can also have other overloaded `main` methods in the same class (e.g. `main(String[] args, int flag)`), but only the exact `public static void main(String[])` (or its varargs form) is ever picked as the entry point when the class is launched.
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>Modern Java Note — Instance Main Methods</div>
 
 Newer Java versions let you skip the class wrapper and the `public static` boilerplate entirely for small programs and scripts:
@@ -336,7 +336,7 @@ Java has 8 primitive types. They are NOT objects – they are simple values:
 | `float` | 32 bits | ~±3.4E38 | 0.0f | `float rate = 3.14f;` |
 | `double` | 64 bits | ~±1.7E308 | 0.0d | `double value = 3.14159;` |
 | `boolean` | 1 bit | true/false | false | `boolean active = true;` |
-| `char` | 16 bits | Unicode 0-65535 | ' ' | `char grade = 'A';` |
+| `char` | 16 bits | Unicode 0-65535 | `'\u0000'` | `char grade = 'A';` |
 
 ### Integer Types
 
@@ -362,7 +362,7 @@ float discount = 0.1f;  // Only use if memory is critical
 double result = 0.1 + 0.2;  // Result is 0.30000000000000004, not 0.3
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Floating Point Pitfall</div>
 
 Never use floating point for money. Always use `BigDecimal`:
@@ -430,7 +430,7 @@ long bigValue = 3_000_000_000L;
 int overflowed = (int) bigValue;  // Overflows silently – no exception, just a wrong int value
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Narrowing Is Silent</div>
 
 Casting a `double` to an `int` truncates rather than rounds, and casting a value outside the target type's range wraps around instead of throwing. Neither case produces a compiler warning at the call site once you've added the cast — the cast is your explicit "I know what I'm doing":
@@ -608,7 +608,7 @@ sum(new int[]{1, 2, 3});  // passing an array directly also works
 - A method can have at most **one** varargs parameter, and it must be the **last** parameter: `void log(String tag, Object... args)` is valid; `void log(Object... args, String tag)` is not.
 - Internally, `int... numbers` is exactly `int[] numbers` — you can use it like any array inside the method.
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Overload Resolution With Varargs</div>
 
 When both a fixed-arity method and a varargs method could match a call, **Java always prefers the fixed-arity (more specific) match**:
@@ -656,7 +656,7 @@ System.out.println(alice.getName());  // "Changed" — the mutation stuck
 // alice still refers to the original object — the reassignment inside rename() had no effect on it
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>The Rule in One Sentence</div>
 
 Java copies the **reference**, not the object. Mutating through the copied reference affects the shared object; reassigning the copied reference does not affect the caller's variable. There is no way in standard Java to pass a variable "by reference" such that reassigning the parameter changes the caller's variable.
@@ -698,7 +698,7 @@ switch (dayOfWeek) {
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Fallthrough Is the Default</div>
 
 Without `break;`, execution **falls through** into the next case, running its code too — this is a classic source of bugs in traditional switch statements:
@@ -813,7 +813,7 @@ for (String name : names) {
 }
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>What the Enhanced For Loop Really Does</div>
 
 The enhanced for-loop isn't special syntax tied to arrays and `List` — it works on **anything that implements `Iterable<T>`**. The compiler rewrites `for (String name : names)` into calls to `names.iterator()`, then repeatedly calls `hasNext()` and `next()` on the returned `Iterator<String>`. `names.forEach(...)` is just a method that does this same loop internally. See [Arrays, Iterators & Conversions](../17-arrays-iterators-and-conversions/) for how `Iterable`, `Iterator`, and fail-fast behavior actually work under the hood.
@@ -896,7 +896,7 @@ for (int row = 0; row < 3; row++) {
 
 Without the label, `break`/`continue` inside the inner loop has no way to affect the outer one directly.
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Loop Pitfall</div>
 
 Modifying a collection while looping can cause `ConcurrentModificationException`:

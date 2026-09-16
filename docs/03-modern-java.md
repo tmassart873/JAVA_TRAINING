@@ -366,7 +366,7 @@ for (OrderStatus s : OrderStatus.values()) {  // values() returns all constants,
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Don't Rely on ordinal() for Business Logic</div>
 
 `ordinal()` reflects declaration order, which is fragile — inserting a new constant in the middle silently shifts every ordinal after it. Never persist an ordinal to a database or use it for comparison logic; if you need an explicit numeric code, add your own field instead.
@@ -552,7 +552,7 @@ List<Customer> found = ids.stream()
 
 ### When NOT to Use Optional
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Optional Misuse</div>
 
 ```java

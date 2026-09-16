@@ -63,7 +63,7 @@ public final class Itinerary {
 }
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>final Prevents Reassignment, Not Mutation</div>
 
 This is the single most common misunderstanding about immutability:
@@ -142,7 +142,7 @@ public class Order {
 // an OrderLine detached from an Order doesn't make sense in this domain
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>The Quick Test</div>
 
 Ask: **"If I delete the container, should the contained object also disappear?"** Yes → composition. "It depends, it could be reassigned elsewhere" → aggregation. "They're just two independent things that reference each other" → association. The code structure (a field holding a reference) looks identical in all three cases — the distinction is about domain meaning and lifecycle, not syntax.

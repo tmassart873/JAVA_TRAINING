@@ -58,7 +58,7 @@ List<Integer> asList = Arrays.asList(1, 2, 3); // See the important caveat below
 System.out.println(Arrays.deepToString(grid)); // "[[1, 2], [3, 4]]" — toString() alone shows garbage for nested arrays
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Arrays Don't Override equals() or toString()</div>
 
 Arrays are objects, but they don't get a meaningful `equals()`/`toString()` — they inherit `Object`'s identity-based versions:
@@ -97,7 +97,7 @@ linkedList.addFirst(0);  // O(1) — just relinks the head pointer
 arrayList.add(0, 0);     // O(n) — shifts every existing element right by one
 ```
 
-<div class="callout concept">
+<div class="callout concept" markdown="1">
 <div class="callout-title"><span>💡</span>In Practice, Default to ArrayList</div>
 
 `ArrayList` wins for the vast majority of real workloads: better cache locality (contiguous memory), lower per-element memory overhead (no node/pointer overhead), and most code reads far more than it inserts in the middle. Reach for `LinkedList` only when you specifically need frequent insertions/removals at known positions (or you need `Deque` operations) and have measured that it actually matters — `ArrayDeque` is usually a better choice than `LinkedList` even for queue/stack use cases.
@@ -210,7 +210,7 @@ List<Integer> trulyMutable = new ArrayList<>(Arrays.asList(boxedArray));  // Wra
 List<Integer> immutable = List.of(1, 2, 3);
 ```
 
-<div class="callout warning">
+<div class="callout warning" markdown="1">
 <div class="callout-title"><span>⚠️</span>Arrays.asList() Is Backed by the Array, Not a Copy</div>
 
 This is one of the most common "gotcha" bugs with `Arrays.asList()`: the returned `List` is a thin wrapper over the *same* array — `set()` writes through to the array, and structural changes (`add`/`remove`) are rejected outright because the array's length can never change. Always wrap it in `new ArrayList<>(...)` if you need a normal, independent, resizable list.
