@@ -1128,7 +1128,7 @@ public static List<String> getHosts() {
 ---
 
 <div class="chapter-nav">
-<a href="{{ '/' | relative_url }}" class="btn btn-secondary">← Home</a>
+<a href="{{ '/docs/00-java-project-setup' | relative_url }}" class="btn btn-secondary">← Previous: Java Project Setup</a>
 <div class="chapter-nav-spacer"></div>
 <a href="{{ '/docs/02-object-oriented-java' | relative_url }}" class="btn">Next: Object-Oriented Java →</a>
 </div>

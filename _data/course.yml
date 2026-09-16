@@ -2,6 +2,11 @@
 # previous/next lesson links. Each lesson's "doc" must match the filename
 # (without extension) of a file in /docs.
 sections:
+  - title: "Getting Started"
+    lessons:
+      - doc: "00-java-project-setup"
+        label: "Java Project Setup"
+
   - title: "Foundations"
     lessons:
       - doc: "01-java-fundamentals"
