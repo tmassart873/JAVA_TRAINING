@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Java Interview Questions
-subtitle: 50+ technical questions and detailed answers
+subtitle: 20 technical questions and detailed answers
 type: docs
 quiz:
   - question: "What's the best way to use this chapter before a technical interview?"
