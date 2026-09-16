@@ -13,6 +13,12 @@ quiz:
   - question: "What is the process of reclaiming memory used by unreachable objects called?"
     options: ["Class loading", "JIT compilation", "Garbage collection", "Bytecode verification"]
     answer: 2
+  - question: "What is parent-first delegation in class loading?"
+    options: ["Each class loader asks its parent to try loading a class first, only attempting itself if the parent can't find it", "Child class loaders always take priority over parents", "Classes are loaded in alphabetical order", "It refers to loading parent classes before subclasses in an inheritance chain"]
+    answer: 0
+  - question: "What's the difference between ClassNotFoundException and NoClassDefFoundError?"
+    options: ["They are the same thing", "ClassNotFoundException occurs when code explicitly requests a class by name (e.g. Class.forName) and it isn't found; NoClassDefFoundError occurs when a class was present at compile time but is missing from the classpath at runtime", "NoClassDefFoundError is checked, ClassNotFoundException is unchecked", "ClassNotFoundException only happens with generics"]
+    answer: 1
 ---
 
 ## The JVM Execution Pipeline
@@ -200,6 +206,12 @@ java -XX:+UseConcMarkSweepGC MyApp  # CMS (concurrent)
 
 ## Class Loading
 
+<div class="callout concept">
+<div class="callout-title"><span>💡</span>Already Covered: JVM vs. JRE vs. JDK</div>
+
+The difference between the JVM, JRE, and JDK is covered in depth in [Java Fundamentals](../01-java-fundamentals/#jvm-jre-jdk) — see that section for the full comparison. This lesson focuses on what happens *inside* the JVM once it's running.
+</div>
+
 ### Class Loader Hierarchy
 
 ```
@@ -261,6 +273,39 @@ Container c = new Container();
 // Now it's loaded
 Container.ExpensiveClass obj = new Container.ExpensiveClass();
 ```
+
+### Parent-First Delegation
+
+When a class loader is asked to load a class, it doesn't immediately try to load it itself — it first delegates the request **up** to its parent, and only attempts loading locally if every ancestor fails to find it:
+
+```
+Application ClassLoader asked to load "com.example.MyClass"
+  → delegates to Platform ClassLoader
+      → delegates to Bootstrap ClassLoader
+          → Bootstrap checks its own classes (java.lang.*, java.util.*, ...) — not found
+      ← Platform checks its own classes (java.sql.*, etc.) — not found
+  ← Application ClassLoader finally tries itself — finds and loads com.example.MyClass
+```
+
+This delegation model exists specifically for security and consistency: it guarantees a class like `java.lang.String` is always loaded by the trusted Bootstrap loader, so application code can never shadow core JDK classes by defining its own `java.lang.String` and having it picked up instead.
+
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>ClassNotFoundException vs. NoClassDefFoundError</div>
+
+These sound similar but signal different problems:
+
+- **`ClassNotFoundException`** (checked exception) — thrown when code *explicitly* requests a class by name at runtime and no class loader in the delegation chain can find it. Classic trigger: `Class.forName("com.mysql.cj.jdbc.Driver")` when the JDBC driver jar isn't on the classpath.
+- **`NoClassDefFoundError`** (an `Error`, unchecked) — thrown when a class **was** available at compile time (your code compiled fine against it) but is missing from the classpath at runtime, typically because a dependency jar wasn't packaged/deployed correctly. This is a "it worked when I compiled it, but not when I ran it" symptom — check your runtime classpath/dependencies first.
+
+```java
+// Triggers ClassNotFoundException — explicit runtime class lookup
+Class.forName("some.missing.ClassName");
+
+// Triggers NoClassDefFoundError — compiled against a class that's
+// simply not present on the classpath when the JVM tries to run this code
+SomeLibraryClass obj = new SomeLibraryClass();  // if SomeLibraryClass's jar wasn't deployed
+```
+</div>
 
 ---
 
@@ -429,9 +474,10 @@ java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading MyApp
 - **Stack**: Stores primitives and references (per-thread, fast, limited)
 - **Heap**: Stores objects (shared, slower, larger, garbage-collected)
 - **Garbage Collection**: Automatic memory management
-- **Class Loading**: Bootstrap → Platform → Application class loaders
+- **Class Loading**: Bootstrap → Platform → Application class loaders, using parent-first delegation
 - **JIT Compilation**: Bytecode compiled to native code for performance
 - **Stack Frame**: Created for each method call with local variables and operand stack
+- **ClassNotFoundException vs. NoClassDefFoundError**: explicit runtime lookup failure vs. a compile-time dependency missing at runtime
 
 ---
 
@@ -440,6 +486,7 @@ java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading MyApp
 - [Baeldung – JVM vs JRE vs JDK](https://www.baeldung.com/jvm-vs-jre-vs-jdk){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Stack vs Heap](https://www.baeldung.com/java-stack-heap){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Class Loaders](https://www.baeldung.com/java-classloaders){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – ClassNotFoundException vs. NoClassDefFoundError](https://www.baeldung.com/java-classnotfoundexception-and-noclassdeffounderror){:target="_blank" rel="noopener noreferrer"}
 - [Oracle JVM Specification](https://docs.oracle.com/javase/specs/jvms/se21/html/index.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
@@ -447,5 +494,5 @@ java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading MyApp
 <div class="chapter-nav">
 <a href="{{ '/docs/09-java-io' | relative_url }}" class="btn btn-secondary">← Previous: Java IO</a>
 <div class="chapter-nav-spacer"></div>
-<a href="{{ '/docs/11-exercises' | relative_url }}" class="btn">Next: Exercises →</a>
+<a href="{{ '/docs/16-modules-reflection-and-java21' | relative_url }}" class="btn">Next: Modules, Reflection & Java 21 →</a>
 </div>

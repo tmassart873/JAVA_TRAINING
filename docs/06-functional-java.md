@@ -13,6 +13,15 @@ quiz:
   - question: "What happens if you try to reuse a stream after a terminal operation has consumed it?"
     options: ["It resets automatically", "It throws an IllegalStateException", "It silently returns an empty stream", "It runs twice as fast"]
     answer: 1
+  - question: "What does predicate1.negate() return?"
+    options: ["A new Predicate that is true whenever the original is false, and vice versa", "A compile error — Predicate has no negate() method", "The boolean opposite of a single test() call", "A predicate that always returns false"]
+    answer: 0
+  - question: "Why prefer IntStream.range(0, list.size()).sum() style primitive streams over Stream<Integer> for numeric work?"
+    options: ["They avoid boxing/unboxing overhead by working with primitive int values directly", "There is no difference at all", "Stream<Integer> cannot be summed", "Primitive streams support more collectors"]
+    answer: 0
+  - question: "What's the key functional difference between a lambda used as a callback and a named method reference used the same way?"
+    options: ["Method references can't be stored in variables", "None — they're both just implementations of the same functional interface handed to another piece of code to invoke later", "Lambdas run synchronously, method references always run asynchronously", "Callbacks only work with Runnable"]
+    answer: 1
 ---
 
 ## Functional Interfaces
@@ -64,6 +73,80 @@ BiFunction<Integer, Integer, Integer> add = (a, b) -> a + b;
 System.out.println(add.apply(2, 3));  // 5
 ```
 
+### The Full Catalog
+
+The four interfaces above cover most everyday cases, but `java.util.function` has variants for every arity and shape you'll actually need — reaching for the right one (instead of always writing your own) makes signatures self-documenting to anyone who knows the package:
+
+```java
+// UnaryOperator<T> – a Function<T, T> where input and output are the same type
+UnaryOperator<String> shout = s -> s.toUpperCase();
+System.out.println(shout.apply("hi"));  // "HI"
+
+// BinaryOperator<T> – a BiFunction<T, T, T> where all three types match
+BinaryOperator<Integer> multiply = (a, b) -> a * b;
+System.out.println(multiply.apply(3, 4));  // 12
+
+// BiConsumer<T, U> – takes two inputs, returns nothing
+BiConsumer<String, Integer> logPair = (name, count) ->
+    System.out.println(name + ": " + count);
+logPair.accept("apples", 5);
+
+// BiPredicate<T, U> – two inputs, returns boolean
+BiPredicate<String, Integer> isLongerThan = (s, n) -> s.length() > n;
+System.out.println(isLongerThan.test("hello", 3));  // true
+
+// Runnable – no input, no output (not in java.util.function, but fully functional)
+Runnable task = () -> System.out.println("Task executed");
+
+// Callable<V> – no input, returns a value, can throw a checked exception (java.util.concurrent)
+Callable<Integer> computation = () -> 42;
+```
+
+<div class="callout concept">
+<div class="callout-title"><span>💡</span>Runnable vs. Supplier vs. Callable</div>
+
+These three look similar but solve different problems: `Runnable.run()` takes nothing and returns nothing (fire-and-forget, and the classic type for passing work to a `Thread`); `Supplier<T>.get()` takes nothing but returns a value; `Callable<V>.call()` also returns a value but — unlike both of the others — is allowed to throw a checked exception, which is exactly why `ExecutorService` submission methods are built around it instead of `Supplier`.
+</div>
+
+### Composing Functional Interfaces
+
+Several built-in interfaces provide default methods for combining instances without writing a new lambda from scratch:
+
+```java
+// Function: andThen (run after) and compose (run before)
+Function<Integer, Integer> timesTwo = n -> n * 2;
+Function<Integer, Integer> plusThree = n -> n + 3;
+
+Function<Integer, Integer> combined = timesTwo.andThen(plusThree);
+System.out.println(combined.apply(5));  // (5*2)=10, then (10+3)=13
+
+Function<Integer, Integer> reversed = timesTwo.compose(plusThree);
+System.out.println(reversed.apply(5));  // (5+3)=8, then (8*2)=16
+
+// Predicate: and, or, negate
+Predicate<Integer> isPositive = n -> n > 0;
+Predicate<Integer> isEven = n -> n % 2 == 0;
+
+Predicate<Integer> positiveAndEven = isPositive.and(isEven);
+Predicate<Integer> positiveOrEven = isPositive.or(isEven);
+Predicate<Integer> isNegative = isPositive.negate();
+
+System.out.println(positiveAndEven.test(4));   // true
+System.out.println(isNegative.test(-3));       // true
+
+// Consumer: andThen (run both in sequence, on the same input)
+Consumer<String> print = System.out::println;
+Consumer<String> log = s -> System.out.println("LOG: " + s);
+Consumer<String> both = print.andThen(log);
+both.accept("event");  // prints "event", then "LOG: event"
+```
+
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>andThen() Order Differs Between Function and Consumer</div>
+
+For `Function`, `f.andThen(g)` means "apply `f`, feed its **result** into `g`." For `Consumer`, `c1.andThen(c2)` means "run `c1`, then run `c2`, both on the **same original input**" — there's no result to pass along since `Consumer` returns nothing. Don't assume the two behave identically just because the method name matches.
+</div>
+
 ---
 
 ## Lambda Expressions
@@ -110,6 +193,48 @@ System.out.println(length.apply("hello"));  // 5
 
 ---
 
+## Callback Functions
+
+A "callback" isn't a separate Java language feature — it's a design pattern that functional interfaces make convenient: you pass a piece of behavior into a method, and that method invokes it later, often after some asynchronous or conditional work completes.
+
+```java
+public class FileDownloader {
+    public void download(String url, Consumer<String> onSuccess, Consumer<Throwable> onFailure) {
+        try {
+            String content = fetchContent(url);   // Imagine real I/O here
+            onSuccess.accept(content);              // Invoke the "success" callback
+        } catch (Exception e) {
+            onFailure.accept(e);                    // Invoke the "failure" callback
+        }
+    }
+
+    private String fetchContent(String url) { return "data from " + url; }
+}
+
+FileDownloader downloader = new FileDownloader();
+downloader.download(
+    "https://example.com/data",
+    result -> System.out.println("Got: " + result),      // onSuccess callback
+    error -> System.err.println("Failed: " + error.getMessage())  // onFailure callback
+);
+```
+
+Before Java 8, this pattern required an anonymous inner class implementing a single-method interface (the classic `new Runnable() { public void run() { ... } }` idiom) — lambdas are simply a much more concise way to supply the same "behavior as data" that callbacks have always relied on.
+
+<div class="callout concept">
+<div class="callout-title"><span>💡</span>Functional Programming Principles, Briefly</div>
+
+Java isn't a purely functional language, but lambdas and streams borrow several ideas worth naming:
+
+- **First-class and higher-order functions** — functions (or here, objects implementing functional interfaces) can be passed as arguments and returned from other methods, just like any other value. `Function::andThen` returning a new `Function` is a higher-order function in action.
+- **Pure functions** — a function whose output depends only on its input, with no observable side effects (no mutating shared state, no I/O). `n -> n * 2` is pure; `n -> { counter++; return n * 2; }` is not.
+- **Referential transparency** — a pure function call can be replaced by its result without changing program behavior. This is exactly why side effects inside `map()`/`filter()` are discouraged (see Common Mistakes below): stream pipelines are designed assuming the lambdas you pass in behave like pure functions.
+
+You don't need to write "functional-style" Java everywhere, but understanding these ideas explains *why* the Streams API is designed the way it is.
+</div>
+
+---
+
 ## Stream API
 
 ### Creating Streams
@@ -132,6 +257,49 @@ Stream<String> generated = Stream.generate(() -> "value").limit(5);
 // Iterate stream
 Stream<Integer> sequence = Stream.iterate(0, n -> n + 1).limit(10);
 ```
+
+### Primitive Streams: IntStream, LongStream, DoubleStream
+
+`Stream<Integer>` boxes every element, which wastes memory and CPU for pure numeric work. The primitive stream specializations avoid that entirely by working with `int`/`long`/`double` directly:
+
+```java
+IntStream.range(0, 5).forEach(System.out::println);       // 0,1,2,3,4 (end exclusive)
+IntStream.rangeClosed(1, 5).forEach(System.out::println); // 1,2,3,4,5 (end inclusive)
+
+int total = IntStream.rangeClosed(1, 100).sum();           // Built-in sum() — no reduce() needed
+OptionalDouble avg = IntStream.of(1, 2, 3, 4).average();
+IntSummaryStatistics stats = IntStream.rangeClosed(1, 10).summaryStatistics();
+System.out.println(stats.getMax() + " " + stats.getMin() + " " + stats.getAverage());
+
+// Converting between a regular Stream and a primitive stream
+List<String> words = List.of("a", "bb", "ccc");
+int totalLength = words.stream().mapToInt(String::length).sum();  // Stream<String> -> IntStream
+
+IntStream ints = IntStream.of(1, 2, 3);
+List<Integer> boxed = ints.boxed().toList();  // IntStream -> Stream<Integer>, when you need boxed objects (e.g. for a List)
+```
+
+### Short-Circuiting Operations
+
+Some operations don't need to process the entire stream to produce a result — they stop as soon as the answer is known, which matters a lot for large or infinite streams:
+
+```java
+// anyMatch/allMatch/noneMatch stop at the first element that decides the answer
+boolean found = Stream.iterate(1, n -> n + 1)   // Infinite stream!
+    .anyMatch(n -> n == 5);                      // Stops after checking 1,2,3,4,5 — doesn't run forever
+
+// findFirst/findAny stop at the first match
+Optional<Integer> first = Stream.iterate(1, n -> n + 1)
+    .filter(n -> n % 7 == 0)
+    .findFirst();                                // Stops as soon as it finds 7
+
+// limit() truncates, letting an infinite stream terminate
+List<Integer> firstFive = Stream.iterate(1, n -> n + 1)
+    .limit(5)
+    .toList();
+```
+
+Without at least one short-circuiting operation (`limit`, `anyMatch`, `findFirst`, etc.), calling a terminal operation on an infinite stream (`Stream.generate`/`Stream.iterate` without a bound) never completes.
 
 ### Terminal Operations (Produce Results)
 
@@ -247,6 +415,70 @@ String joined = names.stream().collect(Collectors.joining(", "));
 List<Integer> lengths = names.stream()
     .collect(Collectors.mapping(String::length, Collectors.toList()));
 ```
+
+### Downstream Collectors: Combining groupingBy() With More Than a List
+
+`groupingBy()` accepts an optional second argument — a **downstream collector** — that controls what happens to each group's elements, instead of just dumping them into a `List`:
+
+```java
+List<String> names = List.of("alice", "bob", "charlie", "anna", "ben");
+
+// Count how many names fall into each length group, instead of collecting them
+Map<Integer, Long> countByLength = names.stream()
+    .collect(Collectors.groupingBy(String::length, Collectors.counting()));
+
+// Sum/average a numeric property per group
+record Employee(String department, double salary) {}
+List<Employee> employees = List.of(
+    new Employee("Eng", 90_000), new Employee("Eng", 95_000), new Employee("Sales", 60_000)
+);
+
+Map<String, Double> totalSalaryByDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::department, Collectors.summingDouble(Employee::salary)));
+
+Map<String, Double> avgSalaryByDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::department, Collectors.averagingDouble(Employee::salary)));
+
+// Find the highest earner per department
+Map<String, Optional<Employee>> topEarnerByDept = employees.stream()
+    .collect(Collectors.groupingBy(Employee::department,
+        Collectors.maxBy(Comparator.comparingDouble(Employee::salary))));
+
+// toMap with a merge function — required when keys can collide
+Map<Integer, String> firstNameOfEachLength = names.stream()
+    .collect(Collectors.toMap(String::length, n -> n, (existing, incoming) -> existing));
+    // Without the merge function (3rd arg), a duplicate key throws IllegalStateException
+
+// collectingAndThen – post-process the collector's result (e.g. make it unmodifiable)
+List<String> immutableUpper = names.stream()
+    .map(String::toUpperCase)
+    .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+
+// teeing (Java 12+) – run TWO collectors over the same stream and combine their results
+record MinMax(int min, int max) {}
+MinMax range = Stream.of(5, 3, 9, 1, 7)
+    .collect(Collectors.teeing(
+        Collectors.minBy(Integer::compareTo),
+        Collectors.maxBy(Integer::compareTo),
+        (min, max) -> new MinMax(min.get(), max.get())
+    ));
+```
+
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>toMap() Without a Merge Function Throws on Duplicate Keys</div>
+
+```java
+List<String> names = List.of("alice", "anna", "bob");
+
+// Throws IllegalStateException: "alice" and "anna" both map to key 'a' (first letter)
+Map<Character, String> byFirstLetter = names.stream()
+    .collect(Collectors.toMap(n -> n.charAt(0), n -> n));
+
+// Fixed — a merge function tells toMap what to do on collision
+Map<Character, String> fixed = names.stream()
+    .collect(Collectors.toMap(n -> n.charAt(0), n -> n, (a, b) -> a + "/" + b));
+```
+</div>
 
 ---
 
@@ -402,12 +634,14 @@ stream.count();  // IllegalStateException – stream already consumed
 - [Baeldung – Streams](https://www.baeldung.com/java-8-streams){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Collectors](https://www.baeldung.com/java-collectors){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Functional Interfaces](https://www.baeldung.com/java-8-functional-interfaces){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Callbacks in Java](https://www.baeldung.com/java-callback-functions){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Introduction to Functional Programming in Java](https://www.baeldung.com/java-functional-programming){:target="_blank" rel="noopener noreferrer"}
 - [Oracle Stream API Tutorial](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="{{ '/docs/05-collections-generics' | relative_url }}" class="btn btn-secondary">← Previous: Collections & Generics</a>
+<a href="{{ '/docs/17-arrays-iterators-and-conversions' | relative_url }}" class="btn btn-secondary">← Previous: Arrays, Iterators & Conversions</a>
 <div class="chapter-nav-spacer"></div>
 <a href="{{ '/docs/07-strings' | relative_url }}" class="btn">Next: Strings →</a>
 </div>

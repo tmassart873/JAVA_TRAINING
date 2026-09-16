@@ -8,6 +8,10 @@ sections:
         label: "Java Fundamentals"
       - doc: "02-object-oriented-java"
         label: "Object-Oriented Java"
+      - doc: "14-object-copying-and-casting"
+        label: "Casting, instanceof & Copying"
+      - doc: "15-immutability-and-relationships"
+        label: "Immutability & Object Relationships"
       - doc: "03-modern-java"
         label: "Modern Java (17+)"
       - doc: "04-equals-hashcode"
@@ -17,6 +21,8 @@ sections:
     lessons:
       - doc: "05-collections-generics"
         label: "Collections & Generics"
+      - doc: "17-arrays-iterators-and-conversions"
+        label: "Arrays, Iterators & Conversions"
       - doc: "06-functional-java"
         label: "Functional Java & Streams"
 
@@ -33,6 +39,11 @@ sections:
     lessons:
       - doc: "10-jvm-fundamentals"
         label: "JVM Fundamentals"
+
+  - title: "Advanced Topics"
+    lessons:
+      - doc: "16-modules-reflection-and-java21"
+        label: "Modules, Reflection & Java 21"
 
   - title: "Practice & Reference"
     lessons:

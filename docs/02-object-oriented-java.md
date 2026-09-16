@@ -25,6 +25,7 @@ quiz:
 - [Abstract Classes](#abstract-classes)
 - [Polymorphism](#polymorphism)
 - [Composition vs Inheritance](#composition-vs-inheritance)
+- [Nested Classes](#nested-classes)
 - [static and final Keywords](#static-and-final-keywords)
 
 ---
@@ -87,6 +88,8 @@ public class Car {
 Car myCar = new Car();      // This is an object/instance
 Car yourCar = new Car();    // Another object/instance
 ```
+
+You'll sometimes see the term **concrete class** — it just means "a class you can instantiate with `new`," as opposed to an `abstract class` (covered later) or an `interface`, neither of which can be instantiated directly. Every ordinary class you write, unless declared `abstract`, is a concrete class by default.
 
 ### `this` Keyword
 
@@ -211,6 +214,21 @@ public class Order {
 }
 ```
 
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>this() and super() Must Be the First Statement</div>
+
+A constructor may call `this(...)` (another constructor in the same class) or `super(...)` (the parent's constructor) — but **never both**, and whichever you use must be the very first statement:
+
+```java
+public Order(String id) {
+    System.out.println("Creating order " + id);  // COMPILE ERROR
+    this(id, new ArrayList<>(), OrderStatus.PENDING);  // Must be the first line
+}
+```
+
+If you don't explicitly call either, the compiler silently inserts a no-argument `super()` call for you before your constructor body runs. This is why a subclass fails to compile if its parent has no no-argument constructor and the subclass doesn't explicitly call `super(...)` with matching arguments.
+</div>
+
 <div class="callout modern">
 <div class="callout-title"><span>🚀</span>Modern Java: Records</div>
 
@@ -291,6 +309,20 @@ class DatabaseHelper {  // No modifier = package-private
 
 // Can only use from same package
 ```
+
+<div class="callout concept">
+<div class="callout-title"><span>💡</span>Top-Level Classes Can Only Be public or Package-Private</div>
+
+The four access levels above apply to **members** (fields, methods, constructors, and nested classes). A **top-level class** (one directly in a `.java` file, not nested inside another class) can only be declared `public` or left package-private — `private` and `protected` are not legal on a top-level class:
+
+```java
+private class Helper { }    // COMPILE ERROR – not allowed on a top-level class
+public class Helper { }     // OK
+class Helper { }             // OK – package-private
+```
+
+A `public` top-level class must also match its filename exactly (`Helper.java` for `public class Helper`), and a single `.java` file may contain at most one `public` top-level class.
+</div>
 
 ---
 
@@ -434,6 +466,35 @@ public class Bird extends Animal {
 }
 ```
 
+<div class="callout concept">
+<div class="callout-title"><span>💡</span>Overloading vs. Overriding — Side by Side</div>
+
+These two terms sound similar but describe opposite ideas, and mixing them up is one of the most common OOP confusions:
+
+| | **Overloading** | **Overriding** |
+|---|---|---|
+| Where | Same class (or subclass adding new signatures) | Subclass redefining a parent's method |
+| Signature | Must **differ** (different parameter list) | Must be **identical** (same name + parameter types) |
+| Return type | Can differ | Must be same or a covariant subtype |
+| Resolved | At **compile time** (based on the declared argument types) | At **runtime** (based on the actual object type) |
+| Keyword | None required | `@Override` is optional but strongly recommended |
+
+```java
+public class Animal {
+    public void move() { System.out.println("Moving"); }
+}
+
+public class Bird extends Animal {
+    @Override
+    public void move() { System.out.println("Flying"); }   // OVERRIDING – same signature, new behavior
+
+    public void move(int meters) { System.out.println("Flying " + meters + "m"); }  // OVERLOADING – different signature
+}
+```
+
+`@Override` isn't just documentation — the compiler verifies the signature actually matches a parent method. Without it, a typo like `move(int meter)` vs. an intended `move(int meters)` silently becomes a harmless overload instead of the override you meant, and the bug goes unnoticed until runtime.
+</div>
+
 ### What NOT to Do: Inheritance for Code Reuse
 
 ```java
@@ -544,6 +605,33 @@ public interface Logger {
 Logger logger = Logger.console();
 logger.log("Hello");
 ```
+
+Static interface methods are **not inherited** by implementing classes — they must be called via the interface name (`Logger.console()`), never via an instance.
+
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>The Diamond Problem With Default Methods</div>
+
+If a class implements two interfaces that each declare the **same default method**, the compiler refuses to guess which one you meant — you get a compile error and must resolve it explicitly:
+
+```java
+interface Flyer {
+    default String move() { return "Flying"; }
+}
+interface Swimmer {
+    default String move() { return "Swimming"; }
+}
+
+// COMPILE ERROR: class Duck inherits unrelated defaults for move() from Flyer and Swimmer
+class Duck implements Flyer, Swimmer {
+    @Override
+    public String move() {
+        return Flyer.super.move() + " and " + Swimmer.super.move();  // Disambiguate explicitly
+    }
+}
+```
+
+`InterfaceName.super.methodName()` is the only way to call a specific interface's default implementation — plain `super.move()` doesn't work here because there's no single parent class, only sibling interfaces.
+</div>
 
 ---
 
@@ -669,6 +757,65 @@ public class Order {
 - More flexible, easier to test
 
 **Prefer composition** in modern Java. Inheritance is rigid; composition is flexible.
+
+<div class="callout concept">
+<div class="callout-title"><span>💡</span>HAS-A Has Two Flavors: Aggregation vs. Composition</div>
+
+"HAS-A" is often treated as one relationship, but there's an important distinction in how tightly the two objects' lifecycles are bound. See [Immutability & Object Relationships](../15-immutability-and-relationships/#association-aggregation-and-composition) for the full breakdown of association, aggregation, and composition — including why it matters for who is responsible for creating/destroying the related object.
+</div>
+
+---
+
+## Nested Classes
+
+Java lets you define a class inside another class. The most common form for utility/helper types is a **static nested class** — it behaves like a normal top-level class, just namespaced inside its enclosing class, and it does **not** hold an implicit reference to an enclosing instance:
+
+```java
+public class OrderProcessor {
+    // Static nested class: doesn't need an OrderProcessor instance to exist
+    public static class ValidationResult {
+        private final boolean valid;
+        private final String reason;
+
+        public ValidationResult(boolean valid, String reason) {
+            this.valid = valid;
+            this.reason = reason;
+        }
+
+        public boolean isValid() { return valid; }
+    }
+
+    public ValidationResult validate(Order order) {
+        if (order.lines().isEmpty()) {
+            return new ValidationResult(false, "Order has no lines");
+        }
+        return new ValidationResult(true, null);
+    }
+}
+
+// Referenced via OuterClass.NestedClass, and constructed without an OrderProcessor instance
+OrderProcessor.ValidationResult result = new OrderProcessor.ValidationResult(true, null);
+```
+
+This differs from a **non-static (inner) class**, which *does* hold an implicit reference to its enclosing instance and requires one to be constructed (`outer.new Inner()`) — inner classes are less common in everyday backend code and are mostly used for tight coupling to a specific outer instance (e.g., a custom `Iterator` implementation returned from a collection class).
+
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>Effectively Final Variables and Lambda Capture</div>
+
+A lambda (or anonymous class) can only capture local variables that are **effectively final** — never reassigned after initialization, even if not explicitly marked `final`:
+
+```java
+int threshold = 100;
+Predicate<Integer> isAboveThreshold = value -> value > threshold;  // OK – threshold never reassigned
+
+int counter = 0;
+Runnable badLambda = () -> {
+    // counter++;  // COMPILE ERROR – counter would no longer be effectively final
+};
+```
+
+This is required because the lambda may run later, possibly on another thread, after the enclosing method has already returned — the lambda captures a **snapshot of the value**, not a live reference to the variable, so the compiler forbids any code path where that snapshot could go stale.
+</div>
 
 ---
 
@@ -806,6 +953,12 @@ public class Dog extends Animal {
 - [Baeldung – Inheritance and Composition](https://www.baeldung.com/java-inheritance-composition){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Interfaces](https://www.baeldung.com/java-interfaces){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Abstract Classes](https://www.baeldung.com/java-abstract-class){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Concrete Class in Java](https://www.baeldung.com/java-concrete-class){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Access Modifiers](https://www.baeldung.com/java-access-modifiers){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – this Keyword](https://www.baeldung.com/java-this){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – super Keyword](https://www.baeldung.com/java-super){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – static and default Methods in Interfaces](https://www.baeldung.com/java-static-default-methods){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Method Overloading and Overriding](https://www.baeldung.com/java-method-overload-override){:target="_blank" rel="noopener noreferrer"}
 - [Oracle Tutorial – Object-Oriented Programming Concepts](https://docs.oracle.com/javase/tutorial/java/concepts/index.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
@@ -813,5 +966,5 @@ public class Dog extends Animal {
 <div class="chapter-nav">
 <a href="{{ '/docs/01-java-fundamentals' | relative_url }}" class="btn btn-secondary">← Previous: Java Fundamentals</a>
 <div class="chapter-nav-spacer"></div>
-<a href="{{ '/docs/03-modern-java' | relative_url }}" class="btn">Next: Modern Java →</a>
+<a href="{{ '/docs/14-object-copying-and-casting' | relative_url }}" class="btn">Next: Casting, instanceof & Copying →</a>
 </div>

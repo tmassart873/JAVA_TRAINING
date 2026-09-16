@@ -13,6 +13,9 @@ quiz:
   - question: "What typically breaks if you override equals() but not hashCode()?"
     options: ["Nothing, it's fine", "String concatenation", "Correct behavior in HashMap/HashSet", "The compiler will refuse to build"]
     answer: 2
+  - question: "What does System.identityHashCode(obj) return, even for a class that overrides hashCode()?"
+    options: ["The overridden hashCode() value", "The default identity-based hash, ignoring any hashCode() override", "Always 0", "A random number that changes on every call"]
+    answer: 1
 ---
 
 ## Why This Matters
@@ -209,6 +212,36 @@ public class Customer {
     }
 }
 ```
+
+---
+
+## The Default hashCode(): Identity Hash
+
+If you never override `hashCode()`, `Object`'s default implementation typically derives it from the object's memory address / identity (the exact mechanism is JVM-specific, but the guarantee is what matters): two different objects, even with identical field values, get different default hash codes:
+
+```java
+public class Point {
+    int x, y;
+    public Point(int x, int y) { this.x = x; this.y = y; }
+    // No hashCode() override
+}
+
+Point p1 = new Point(1, 2);
+Point p2 = new Point(1, 2);
+System.out.println(p1.hashCode() == p2.hashCode());  // Almost certainly false — different objects, default identity hash
+```
+
+You can always obtain this identity-based hash directly, even for a class that *has* overridden `hashCode()`, via `System.identityHashCode(Object)`:
+
+```java
+Customer c1 = new Customer("123", "Alice", "alice@example.com");
+Customer c2 = new Customer("123", "Alice", "alice@example.com");
+
+System.out.println(c1.hashCode());                     // Same for c1 and c2 if equals()/hashCode() are overridden correctly
+System.out.println(System.identityHashCode(c1));       // Different from identityHashCode(c2) — always identity-based, ignores overrides
+```
+
+This is mostly useful for debugging (e.g., distinguishing two "equal" objects in a log) — application code should essentially never call `System.identityHashCode()` directly.
 
 ---
 
@@ -508,6 +541,9 @@ A: Hash collision. HashMap stores them in the same bucket and uses equals() to d
 - Prefer immutable keys for HashMap/HashSet
 - Use Objects.equals() and Objects.hash() to avoid null issues
 - Records auto-generate correct equals/hashCode
+- The default `hashCode()` is identity-based; `System.identityHashCode()` gives you that identity hash even when a class overrides `hashCode()`
+
+`equals()` answers "are these the same value?" — a related but distinct question is "how should these be **ordered**?", which is what `Comparable` and `Comparator` answer. See [Collections & Generics](../05-collections-generics/#comparable-and-comparator) for sorting objects and the subtle "consistent with equals" rule that connects the two.
 
 ---
 
@@ -515,6 +551,7 @@ A: Hash collision. HashMap stores them in the same bucket and uses equals() to d
 
 - [Baeldung – equals() and hashCode()](https://www.baeldung.com/java-equals-hashcode-contracts){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Comparing Objects](https://www.baeldung.com/java-comparing-objects){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Guide to hashCode()](https://www.baeldung.com/java-hashcode){:target="_blank" rel="noopener noreferrer"}
 - [Oracle – Object.equals()](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)){:target="_blank" rel="noopener noreferrer"}
 
 ---

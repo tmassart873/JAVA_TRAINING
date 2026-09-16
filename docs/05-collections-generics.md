@@ -13,6 +13,15 @@ quiz:
   - question: "What is the main benefit of the diamond operator (<>)?"
     options: ["It enables multiple inheritance", "It lets the compiler infer the generic type", "It removes the need for interfaces", "It boosts runtime performance"]
     answer: 1
+  - question: "A HashMap resizes (doubles its bucket array) once it exceeds what fraction of capacity, by default?"
+    options: ["0.5", "0.75", "0.9", "1.0 — only when completely full"]
+    answer: 1
+  - question: "Why can two Product objects with equal price but different name both end up as size 1 in a TreeSet, even though equals() considers them different?"
+    options: ["This is a JVM bug", "TreeSet uses compareTo(), not equals(), to determine 'sameness' — if compareTo() only checks price, elements with equal price are treated as duplicates", "TreeSet always deduplicates by hashCode()", "TreeSet ignores the second element added"]
+    answer: 1
+  - question: "Due to type erasure, which of these is illegal in Java?"
+    options: ["List<?> list", "if (obj instanceof List<?>)", "if (obj instanceof List<String>)", "List<String> list = new ArrayList<>()"]
+    answer: 2
 ---
 
 ## Collections Hierarchy
@@ -187,6 +196,52 @@ population.remove("Go");
 population.computeIfAbsent("Rust", k -> 25);
 ```
 
+### How HashMap Actually Works Internally
+
+`HashMap` achieves its average O(1) `get`/`put` using a **bucket array**: each key's `hashCode()` is used to compute which bucket it belongs to, and keys that land in the same bucket (a **collision**) are chained together and distinguished using `equals()` — this is the same mechanism covered in [equals() & hashCode()](../04-equals-hashcode/#how-hashmap-uses-equals-and-hashcode).
+
+Two details explain HashMap's performance characteristics in practice:
+
+- **Load factor (default 0.75)**: once the map is more than 75% full relative to its current bucket-array size, it automatically **resizes** — doubling the array and rehashing every entry into a new bucket. This keeps average lookup time roughly constant as the map grows, at the cost of an occasional expensive resize operation.
+- **Treeification (Java 8+)**: if a single bucket accumulates too many colliding entries (8 or more, by default), Java converts that bucket's linked chain into a small red-black tree, so lookups within a badly-collided bucket degrade to O(log n) instead of O(n) — a defense against poor `hashCode()` implementations or hash-flooding attacks.
+
+```
+Simplified internal shape of a HashMap<String, Integer>:
+
+buckets[0]: []
+buckets[1]: [("Go", 40)]
+buckets[2]: [("Java", 85) -> ("Rust", 25)]   // Collision: both hash to bucket 2, chained
+buckets[3]: [("Python", 90)]
+```
+
+<div class="callout concept">
+<div class="callout-title"><span>💡</span>HashSet Is Just a HashMap in Disguise</div>
+
+`HashSet` is internally implemented as a `HashMap` where every element is stored as a **key**, mapped to a single shared dummy value. This is why `HashSet` has the exact same performance characteristics (average O(1), same load-factor/treeification behavior) and the same requirement that elements correctly implement `equals()`/`hashCode()`.
+</div>
+
+### Map Initialization Idioms
+
+```java
+// Small, fixed, immutable map (Java 9+) — cleanest for constants/config
+Map<String, Integer> fixed = Map.of("A", 1, "B", 2, "C", 3);  // Max 10 pairs with Map.of(...)
+
+// Larger fixed sets of entries
+Map<String, Integer> larger = Map.ofEntries(
+    Map.entry("A", 1),
+    Map.entry("B", 2)
+);
+
+// Need a MUTABLE map that starts pre-populated
+Map<String, Integer> mutable = new HashMap<>(Map.of("A", 1, "B", 2));  // Map.of(...) itself is immutable
+
+// Building a map from a Stream
+Map<String, Integer> fromStream = names.stream()
+    .collect(Collectors.toMap(name -> name, String::length));
+```
+
+`Map.of(...)` returns an immutable map — calling `put`/`remove` on it throws `UnsupportedOperationException`. Wrap it in `new HashMap<>(...)` when you need a starting point you can still mutate.
+
 ### TreeMap (Sorted by Key)
 
 ```java
@@ -342,6 +397,26 @@ processNumbers(List.of(1.5, 2.5));       // OK
 processNumbers(List.of("a", "b"));       // Compiler error
 ```
 
+### Type Erasure
+
+Generic type information exists only at **compile time** — the compiler uses it to check your code, then erases it, replacing type parameters with `Object` (or their bound) in the compiled bytecode. This has real, observable consequences:
+
+```java
+List<String> strings = new ArrayList<>();
+List<Integer> integers = new ArrayList<>();
+
+System.out.println(strings.getClass() == integers.getClass());  // true! Both are just ArrayList at runtime
+
+// You cannot do this — the generic type isn't available at runtime to check against:
+// if (obj instanceof List<String>) { }   // COMPILE ERROR
+if (obj instanceof List<?>) { }            // OK — unbounded wildcard is fine
+
+// You cannot create an array of a generic type:
+// T[] array = new T[10];   // COMPILE ERROR
+```
+
+This is why generics are described as **compile-time-only type safety**: the checks protect you while writing code, but the erased bytecode has no memory of what `T` was.
+
 ---
 
 ## Diamond Operator
@@ -387,6 +462,33 @@ products.add(new Product("A", 10));
 Collections.sort(products);  // Sorts by price (natural order)
 ```
 
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>compareTo() Should Be Consistent With equals()</div>
+
+The `Comparable` contract strongly recommends (though doesn't strictly enforce at compile time) that `x.compareTo(y) == 0` should imply `x.equals(y) == true`. Violating this doesn't break `compareTo()` itself, but silently corrupts sorted collections like `TreeSet`/`TreeMap`, which use `compareTo()` — **not** `equals()` — to decide whether two elements are "the same":
+
+```java
+public class Product implements Comparable<Product> {
+    private String name;
+    private double price;
+
+    @Override
+    public int compareTo(Product other) {
+        return Double.compare(this.price, other.price);  // Only compares price
+    }
+    // equals() compares name AND price (not shown)
+}
+
+Set<Product> products = new TreeSet<>();
+products.add(new Product("Widget", 10.0));
+products.add(new Product("Gadget", 10.0));  // Same price, different name/equals()
+
+System.out.println(products.size());  // 1, not 2! TreeSet used compareTo()==0 to treat them as duplicates
+```
+
+If a class's natural ordering can't respect this rule (e.g., sorting by price alone while equality considers more fields), document it clearly and prefer an explicit `Comparator` instead of `Comparable` for that ordering.
+</div>
+
 ### Comparator (Custom Order)
 
 ```java
@@ -416,6 +518,20 @@ products.sort(
         .thenComparingDouble(Product::getPrice)
 );
 ```
+
+### Built-In Comparator Factories
+
+```java
+List<String> names = new ArrayList<>(List.of("charlie", "alice", null, "bob"));
+
+names.sort(Comparator.naturalOrder());               // Natural (alphabetical) order — throws NPE on the null
+names.sort(Comparator.reverseOrder());               // Reverse of natural order — also throws NPE on null
+
+names.sort(Comparator.nullsFirst(Comparator.naturalOrder()));  // nulls sort first, then natural order
+names.sort(Comparator.nullsLast(Comparator.naturalOrder()));   // nulls sort last, then natural order
+```
+
+`nullsFirst`/`nullsLast` wrap another `Comparator` and handle `null` explicitly — without one of them, sorting a list that can contain `null` throws `NullPointerException` the moment two elements are compared where one is `null`.
 
 ---
 
@@ -513,12 +629,16 @@ map.entrySet().removeIf(entry -> entry.getKey().equals("B"));
 - [Baeldung – HashMap](https://www.baeldung.com/java-hashmap){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – HashSet](https://www.baeldung.com/java-hashset){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Generics](https://www.baeldung.com/java-generics){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Comparator and Comparable](https://www.baeldung.com/java-comparator-comparable){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Map.of and Map.ofEntries](https://www.baeldung.com/java-9-immutable-collections){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – Collections API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collections.html){:target="_blank" rel="noopener noreferrer"}
+
+For a deep dive on `java.util.Arrays`, `ArrayList` vs. `LinkedList` internals, and how `Iterator`/`Iterable` actually work, see [Arrays, Iterators & Conversions](../17-arrays-iterators-and-conversions/).
 
 ---
 
 <div class="chapter-nav">
 <a href="{{ '/docs/04-equals-hashcode' | relative_url }}" class="btn btn-secondary">← Previous: equals() & hashCode()</a>
 <div class="chapter-nav-spacer"></div>
-<a href="{{ '/docs/06-functional-java' | relative_url }}" class="btn">Next: Functional Java & Streams →</a>
+<a href="{{ '/docs/17-arrays-iterators-and-conversions' | relative_url }}" class="btn">Next: Arrays, Iterators & Conversions →</a>
 </div>

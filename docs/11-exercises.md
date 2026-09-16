@@ -478,7 +478,7 @@ try {
 ---
 
 <div class="chapter-nav">
-<a href="{{ '/docs/10-jvm-fundamentals' | relative_url }}" class="btn btn-secondary">← Previous: JVM Fundamentals</a>
+<a href="{{ '/docs/16-modules-reflection-and-java21' | relative_url }}" class="btn btn-secondary">← Previous: Modules, Reflection & Java 21</a>
 <div class="chapter-nav-spacer"></div>
 <a href="{{ '/docs/12-interview-questions' | relative_url }}" class="btn">Next: Interview Questions →</a>
 </div>

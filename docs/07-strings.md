@@ -13,6 +13,15 @@ quiz:
   - question: "What is the correct way to compare the content of two Strings?"
     options: ["Using ==", "Using .equals()", "Using instanceof", "Using .hashCode() == .hashCode()"]
     answer: 1
+  - question: "What does \"apple\".compareTo(\"banana\") return?"
+    options: ["true", "A negative number, because 'a' comes before 'b' lexicographically", "0", "A positive number"]
+    answer: 1
+  - question: "Why is Objects.equals(a, b) often safer than a.equals(b)?"
+    options: ["It's faster", "It handles the case where 'a' is null without throwing a NullPointerException", "It ignores case differences", "There is no difference"]
+    answer: 1
+  - question: "If a class doesn't override toString(), what does calling it on an instance print?"
+    options: ["An empty string", "The class name plus '@' plus the object's hex hash code, e.g. Customer@1b6d3586", "null", "A compile error"]
+    answer: 1
 ---
 
 ## String Immutability
@@ -129,6 +138,43 @@ System.out.println(a.contains("ell"));  // true
 System.out.println(a.startsWith("he"));  // true
 System.out.println(a.endsWith("lo"));    // true
 ```
+
+### Ordering: compareTo() and compareToIgnoreCase()
+
+`String` implements `Comparable<String>`, comparing lexicographically (dictionary order, based on Unicode code points) — this is what powers `Collections.sort()` on a `List<String>` by default:
+
+```java
+System.out.println("apple".compareTo("banana"));  // Negative — "apple" comes before "banana"
+System.out.println("banana".compareTo("apple"));  // Positive — "banana" comes after "apple"
+System.out.println("apple".compareTo("apple"));   // 0 — equal
+
+System.out.println("Apple".compareTo("apple"));   // Negative — uppercase letters sort before lowercase (Unicode value)
+System.out.println("Apple".compareToIgnoreCase("apple"));  // 0 — case-insensitive comparison
+```
+
+For sorting a list of strings case-insensitively without permanently changing the strings themselves, use a `Comparator`:
+
+```java
+List<String> names = new ArrayList<>(List.of("bob", "Alice", "charlie"));
+names.sort(String.CASE_INSENSITIVE_ORDER);                 // Built-in case-insensitive Comparator
+// or equivalently:
+names.sort(Comparator.comparing(String::toLowerCase));
+```
+
+### Null-Safe Comparison With Objects.equals()
+
+Calling `.equals()` directly on a value that might be `null` throws `NullPointerException`. `java.util.Objects` provides a null-safe alternative:
+
+```java
+String a = null;
+String b = "hello";
+
+// a.equals(b);                 // NullPointerException!
+System.out.println(Objects.equals(a, b));  // false — handles null gracefully, no exception
+System.out.println(Objects.equals(null, null));  // true — both null counts as equal
+```
+
+`Objects.equals(a, b)` is exactly equivalent to `(a == b) || (a != null && a.equals(b))` — it's a small utility, but it's the idiomatic way to write null-tolerant equality checks, and (as seen in [equals() & hashCode()](../04-equals-hashcode/)) it's what generated `equals()` implementations typically use internally for nullable fields.
 
 ---
 
@@ -357,6 +403,125 @@ byte[] bytes = {72, 101, 108, 108, 111};
 String fromBytes = new String(bytes, StandardCharsets.UTF_8);
 ```
 
+### char ↔ String Conversions
+
+```java
+// char to String
+char c = 'A';
+String fromChar = String.valueOf(c);        // "A"
+String fromChar2 = Character.toString(c);   // "A"
+
+// String to char (single character)
+char firstChar = "Hello".charAt(0);         // 'H'
+
+// String to char[] and back
+char[] chars = "Hello".toCharArray();
+String backToString = new String(chars);    // "Hello"
+String backToString2 = String.valueOf(chars);  // "Hello" — equivalent
+```
+
+### String ↔ StringBuilder Conversions
+
+```java
+// String to StringBuilder
+String text = "Hello";
+StringBuilder sb = new StringBuilder(text);
+
+// StringBuilder to String
+String result = sb.toString();
+
+// Common pattern: wrap, mutate, unwrap
+StringBuilder builder = new StringBuilder("Hello");
+builder.append(", World!").insert(0, ">> ");
+String finalText = builder.toString();  // ">> Hello, World!"
+```
+
+### String.chars(): Streaming Over Characters
+
+`chars()` (Java 8+) returns an `IntStream` of the string's UTF-16 code units — useful for character-level stream processing without manually indexing:
+
+```java
+long vowelCount = "hello world".chars()
+    .filter(c -> "aeiou".indexOf(c) >= 0)
+    .count();  // 3
+
+String upperViaStream = "hello".chars()
+    .mapToObj(c -> String.valueOf((char) c).toUpperCase())
+    .collect(Collectors.joining());  // "HELLO" — illustrative; toUpperCase() alone is simpler for this case
+```
+
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>chars() Produces int Code Points, Not char</div>
+
+`IntStream` elements from `chars()` are `int` values (UTF-16 code units), not `char` — you must cast (`(char) c`) before treating one as a character, and comparisons like `"aeiou".indexOf(c)` work because `indexOf(int)` accepts a code point directly.
+</div>
+
+---
+
+## The toString() Method
+
+Every object has a `toString()`, inherited from `Object`. Its default implementation is rarely useful:
+
+```java
+public class Customer {
+    private String name;
+    private int id;
+    // constructor omitted
+}
+
+Customer customer = new Customer("Alice", 42);
+System.out.println(customer);  // Something like "Customer@1b6d3586" — className@hexHashCode
+```
+
+That default comes directly from `Object.toString()`'s source: `getClass().getName() + "@" + Integer.toHexString(hashCode())`. It's almost never what you want for debugging or logging, so most classes should override it:
+
+```java
+public class Customer {
+    private final String name;
+    private final int id;
+
+    @Override
+    public String toString() {
+        return "Customer{name='" + name + "', id=" + id + "}";
+    }
+}
+
+Customer customer = new Customer("Alice", 42);
+System.out.println(customer);  // "Customer{name='Alice', id=42}"
+```
+
+### Records Get toString() for Free
+
+A `record` automatically generates a `toString()` that lists every component, so you don't need to hand-write one for simple data carriers:
+
+```java
+public record Point(int x, int y) {}
+
+Point p = new Point(3, 4);
+System.out.println(p);  // "Point[x=3, y=4]" — generated automatically
+```
+
+<div class="callout warning">
+<div class="callout-title"><span>⚠️</span>Never Include Sensitive Data in toString()</div>
+
+`toString()` output routinely ends up in logs, exception messages, and debugger views — places you don't fully control the audience for. Never include passwords, tokens, national ID numbers, or other sensitive fields:
+
+```java
+// WRONG — password ends up in every log line that prints this object
+public record User(String username, String password) {
+    // Using the default record toString() here leaks the password
+}
+
+// CORRECT — override to redact sensitive fields
+public record User(String username, String password) {
+    @Override
+    public String toString() {
+        return "User{username='" + username + "', password='[REDACTED]'}";
+    }
+}
+```
+</div>
+
 ---
 
 ## Common Mistakes
@@ -421,6 +586,8 @@ String result = sb.toString();
 - **StringBuilder**: Mutable alternative for string building
 - **Formatting**: String.format() and System.out.printf()
 - **Operations**: substring, replace, split, join, trim, etc.
+- **Ordering**: compareTo()/compareToIgnoreCase() for lexicographic comparison; Objects.equals() for null-safe equality
+- **toString()**: override it for meaningful output; records generate one automatically; never leak sensitive data through it
 
 ---
 
@@ -429,6 +596,7 @@ String result = sb.toString();
 - [Baeldung – Strings](https://www.baeldung.com/java-string){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – String Immutability](https://www.baeldung.com/java-string-immutable){:target="_blank" rel="noopener noreferrer"}
 - [Baeldung – String Comparison](https://www.baeldung.com/java-compare-strings){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Guide to toString()](https://www.baeldung.com/java-tostring){:target="_blank" rel="noopener noreferrer"}
 - [Oracle String API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html){:target="_blank" rel="noopener noreferrer"}
 
 ---

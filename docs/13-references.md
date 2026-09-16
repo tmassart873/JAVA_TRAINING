@@ -86,6 +86,9 @@ quiz:
 ### Reflection
 - [Baeldung – Reflection](https://www.baeldung.com/java-reflection){:target="_blank" rel="noopener noreferrer"}
 
+### Modules (JPMS)
+- [Baeldung – Java 9 Modularity](https://www.baeldung.com/java-9-modularity){:target="_blank" rel="noopener noreferrer"}
+
 ---
 
 ## Equality and Object Contracts
@@ -294,7 +297,19 @@ Used Baeldung's exception, checked/unchecked, try-with-resources, custom excepti
 Used Baeldung's file operations, readers, streams, and NIO2 articles.
 
 ### Chapter 10: JVM Fundamentals
-Used Baeldung's JVM/JRE/JDK, stack vs heap, and class loaders articles.
+Used Baeldung's JVM/JRE/JDK, stack vs heap, class loaders, and parent-first delegation articles.
+
+### Chapter 14: Object Copying & Casting
+Used Baeldung's type casting, instanceof pattern matching, and deep/shallow copy articles.
+
+### Chapter 15: Immutability & Object Relationships
+Used Baeldung's immutable objects and composition/aggregation/association articles.
+
+### Chapter 16: Modules, Reflection & Java 21
+Used Baeldung's Java 9 modularity, reflection, and Java 21 unnamed classes/instance main articles.
+
+### Chapter 17: Arrays, Iterators & Conversions
+Used Baeldung's java.util.Arrays, ArrayList/LinkedList, iterator, and array-to-list conversion articles.
 
 ---
 
