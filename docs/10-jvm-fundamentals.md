@@ -305,6 +305,7 @@ Class.forName("some.missing.ClassName");
 // simply not present on the classpath when the JVM tries to run this code
 SomeLibraryClass obj = new SomeLibraryClass();  // if SomeLibraryClass's jar wasn't deployed
 ```
+
 </div>
 
 ---

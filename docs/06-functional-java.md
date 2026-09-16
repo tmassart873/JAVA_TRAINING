@@ -478,6 +478,7 @@ Map<Character, String> byFirstLetter = names.stream()
 Map<Character, String> fixed = names.stream()
     .collect(Collectors.toMap(n -> n.charAt(0), n -> n, (a, b) -> a + "/" + b));
 ```
+
 </div>
 
 ---

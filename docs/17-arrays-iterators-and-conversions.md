@@ -74,6 +74,7 @@ System.out.println(Arrays.equals(a, b));  // true — content comparison, this i
 System.out.println(a);               // Something like "[I@1b6d3586" — useless
 System.out.println(Arrays.toString(a));  // "[1, 2, 3]" — what you actually want
 ```
+
 </div>
 
 ---

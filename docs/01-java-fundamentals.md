@@ -376,6 +376,7 @@ accountBalance = accountBalance - 0.05;  // Precision loss
 BigDecimal accountBalance = new BigDecimal("100.10");
 accountBalance = accountBalance.subtract(new BigDecimal("0.05"));
 ```
+
 </div>
 
 ### Boolean
@@ -439,6 +440,7 @@ Casting a `double` to an `int` truncates rather than rounds, and casting a value
 int score = (int) 9.99;          // 9, not 10 – use Math.round() if you want rounding
 byte tooBig = (byte) 200;        // -56 – silently wraps, byte only holds -128..127
 ```
+
 </div>
 
 Casting also applies to reference types (upcasting/downcasting between related classes) and to boxing/unboxing between primitives and their wrapper types — both are covered in depth in [Casting, instanceof & Copying](../14-object-copying-and-casting/).
@@ -732,6 +734,7 @@ switch (day) {
         System.out.println("Weekday");
 }
 ```
+
 </div>
 
 ### Switch Expression (Java 14+, Preferred)
@@ -922,6 +925,7 @@ while (it.hasNext()) {
     }
 }
 ```
+
 </div>
 
 ---
