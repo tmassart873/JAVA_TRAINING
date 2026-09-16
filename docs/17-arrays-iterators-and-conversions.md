@@ -54,7 +54,7 @@ System.out.println(Arrays.toString(numbers));  // "[0, 0, 0, 0, 0]" — readable
 
 List<Integer> asList = Arrays.asList(1, 2, 3); // See the important caveat below
 
-int[][] grid = {{1, 2}, {3, 4}};
+{% raw %}int[][] grid = {{1, 2}, {3, 4}};{% endraw %}
 System.out.println(Arrays.deepToString(grid)); // "[[1, 2], [3, 4]]" — toString() alone shows garbage for nested arrays
 ```
 
