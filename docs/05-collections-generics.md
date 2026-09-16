@@ -499,16 +499,16 @@ map.entrySet().removeIf(entry -> entry.getKey().equals("B"));
 
 ## Further Reading
 
-- [Baeldung – ArrayList](https://www.baeldung.com/java-arraylist)
-- [Baeldung – HashMap](https://www.baeldung.com/java-hashmap)
-- [Baeldung – HashSet](https://www.baeldung.com/java-hashset)
-- [Baeldung – Generics](https://www.baeldung.com/java-generics)
-- [Baeldung – Collections API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collections.html)
+- [Baeldung – ArrayList](https://www.baeldung.com/java-arraylist){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – HashMap](https://www.baeldung.com/java-hashmap){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – HashSet](https://www.baeldung.com/java-hashset){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Generics](https://www.baeldung.com/java-generics){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Collections API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collections.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/04-equals-hashcode" class="btn btn-secondary">← Previous: equals() & hashCode()</a>
+<a href="{{ '/docs/04-equals-hashcode' | relative_url }}" class="btn btn-secondary">← Previous: equals() & hashCode()</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/06-functional-java" class="btn">Next: Functional Java & Streams →</a>
+<a href="{{ '/docs/06-functional-java' | relative_url }}" class="btn">Next: Functional Java & Streams →</a>
 </div>

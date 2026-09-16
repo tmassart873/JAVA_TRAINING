@@ -259,14 +259,14 @@ For questions or clarifications:
 
 ## Quick Navigation
 
-**Start Here**: [Java Fundamentals](/docs/01-java-fundamentals)
+**Start Here**: [Java Fundamentals](docs/01-java-fundamentals.md)
 
 **Jump To**:
-- [Collections & Generics](/docs/05-collections-generics) – for data structure work
-- [equals() & hashCode()](/docs/04-equals-hashcode) – if you've had HashMap bugs
-- [Functional Java & Streams](/docs/06-functional-java) – for modern declarative code
-- [Interview Questions](/docs/12-interview-questions) – if preparing for technical interviews
-- [Practical Exercises](/docs/11-exercises) – to practice coding
+- [Collections & Generics](docs/05-collections-generics.md) – for data structure work
+- [equals() & hashCode()](docs/04-equals-hashcode.md) – if you've had HashMap bugs
+- [Functional Java & Streams](docs/06-functional-java.md) – for modern declarative code
+- [Interview Questions](docs/12-interview-questions.md) – if preparing for technical interviews
+- [Practical Exercises](docs/11-exercises.md) – to practice coding
 
 ---
 

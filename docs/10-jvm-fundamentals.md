@@ -427,15 +427,15 @@ java -XX:+UnlockDiagnosticVMOptions -XX:+TraceClassLoading MyApp
 
 ## Further Reading
 
-- [Baeldung – JVM vs JRE vs JDK](https://www.baeldung.com/jvm-vs-jre-vs-jdk)
-- [Baeldung – Stack vs Heap](https://www.baeldung.com/java-stack-heap)
-- [Baeldung – Class Loaders](https://www.baeldung.com/java-classloaders)
-- [Oracle JVM Specification](https://docs.oracle.com/javase/specs/jvms/se21/html/index.html)
+- [Baeldung – JVM vs JRE vs JDK](https://www.baeldung.com/jvm-vs-jre-vs-jdk){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Stack vs Heap](https://www.baeldung.com/java-stack-heap){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Class Loaders](https://www.baeldung.com/java-classloaders){:target="_blank" rel="noopener noreferrer"}
+- [Oracle JVM Specification](https://docs.oracle.com/javase/specs/jvms/se21/html/index.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/09-java-io" class="btn btn-secondary">← Previous: Java IO</a>
+<a href="{{ '/docs/09-java-io' | relative_url }}" class="btn btn-secondary">← Previous: Java IO</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/11-exercises" class="btn">Next: Exercises →</a>
+<a href="{{ '/docs/11-exercises' | relative_url }}" class="btn">Next: Exercises →</a>
 </div>

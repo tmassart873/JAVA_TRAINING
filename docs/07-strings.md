@@ -416,15 +416,15 @@ String result = sb.toString();
 
 ## Further Reading
 
-- [Baeldung – Strings](https://www.baeldung.com/java-string)
-- [Baeldung – String Immutability](https://www.baeldung.com/java-string-immutable)
-- [Baeldung – String Comparison](https://www.baeldung.com/java-compare-strings)
-- [Oracle String API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html)
+- [Baeldung – Strings](https://www.baeldung.com/java-string){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – String Immutability](https://www.baeldung.com/java-string-immutable){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – String Comparison](https://www.baeldung.com/java-compare-strings){:target="_blank" rel="noopener noreferrer"}
+- [Oracle String API](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/06-functional-java" class="btn btn-secondary">← Previous: Functional Java & Streams</a>
+<a href="{{ '/docs/06-functional-java' | relative_url }}" class="btn btn-secondary">← Previous: Functional Java & Streams</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/08-exceptions" class="btn">Next: Exceptions →</a>
+<a href="{{ '/docs/08-exceptions' | relative_url }}" class="btn">Next: Exceptions →</a>
 </div>

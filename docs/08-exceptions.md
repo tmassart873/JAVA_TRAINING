@@ -438,15 +438,15 @@ try {
 
 ## Further Reading
 
-- [Baeldung – Exceptions](https://www.baeldung.com/java-exceptions)
-- [Baeldung – Try-With-Resources](https://www.baeldung.com/java-try-with-resources)
-- [Baeldung – Custom Exceptions](https://www.baeldung.com/java-new-custom-exception)
-- [Oracle Exceptions Tutorial](https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html)
+- [Baeldung – Exceptions](https://www.baeldung.com/java-exceptions){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Try-With-Resources](https://www.baeldung.com/java-try-with-resources){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Custom Exceptions](https://www.baeldung.com/java-new-custom-exception){:target="_blank" rel="noopener noreferrer"}
+- [Oracle Exceptions Tutorial](https://docs.oracle.com/javase/tutorial/essential/exceptions/index.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/07-strings" class="btn btn-secondary">← Previous: Strings</a>
+<a href="{{ '/docs/07-strings' | relative_url }}" class="btn btn-secondary">← Previous: Strings</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/09-java-io" class="btn">Next: Java IO →</a>
+<a href="{{ '/docs/09-java-io' | relative_url }}" class="btn">Next: Java IO →</a>
 </div>

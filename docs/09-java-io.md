@@ -387,15 +387,15 @@ if (Files.exists(path)) {
 
 ## Further Reading
 
-- [Baeldung – Java IO](https://www.baeldung.com/java-nio-2-file-api)
-- [Baeldung – Reading Files](https://www.baeldung.com/reading-file-in-java)
-- [Baeldung – Writing Files](https://www.baeldung.com/java-write-to-file)
-- [Oracle NIO2 Tutorial](https://docs.oracle.com/javase/tutorial/nio/file/index.html)
+- [Baeldung – Java IO](https://www.baeldung.com/java-nio-2-file-api){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Reading Files](https://www.baeldung.com/reading-file-in-java){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Writing Files](https://www.baeldung.com/java-write-to-file){:target="_blank" rel="noopener noreferrer"}
+- [Oracle NIO2 Tutorial](https://docs.oracle.com/javase/tutorial/nio/file/index.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/08-exceptions" class="btn btn-secondary">← Previous: Exceptions</a>
+<a href="{{ '/docs/08-exceptions' | relative_url }}" class="btn btn-secondary">← Previous: Exceptions</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/10-jvm-fundamentals" class="btn">Next: JVM Fundamentals →</a>
+<a href="{{ '/docs/10-jvm-fundamentals' | relative_url }}" class="btn">Next: JVM Fundamentals →</a>
 </div>

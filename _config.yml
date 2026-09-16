@@ -21,7 +21,7 @@ excerpt_separator: "\n\n"
 collections:
   docs:
     output: true
-    permalink: /:name/
+    permalink: /docs/:name/
 
 # Defaults
 defaults:

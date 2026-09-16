@@ -595,13 +595,13 @@ public record Point(int x, int y) {}
 
 ## Further Reading
 
-- [Baeldung Interview Questions](https://www.baeldung.com/java-interview-questions)
-- [Oracle Java Documentation](https://docs.oracle.com/en/java/javase/21/)
+- [Baeldung Interview Questions](https://www.baeldung.com/java-interview-questions){:target="_blank" rel="noopener noreferrer"}
+- [Oracle Java Documentation](https://docs.oracle.com/en/java/javase/21/){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/11-exercises" class="btn btn-secondary">← Previous: Exercises</a>
+<a href="{{ '/docs/11-exercises' | relative_url }}" class="btn btn-secondary">← Previous: Exercises</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/13-references" class="btn">Next: References →</a>
+<a href="{{ '/docs/13-references' | relative_url }}" class="btn">Next: References →</a>
 </div>

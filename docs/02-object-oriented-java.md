@@ -792,16 +792,16 @@ public class Dog extends Animal {
 
 ## Further Reading
 
-- [Baeldung – Classes and Objects](https://www.baeldung.com/java-classes-objects)
-- [Baeldung – Inheritance and Composition](https://www.baeldung.com/java-inheritance-composition)
-- [Baeldung – Interfaces](https://www.baeldung.com/java-interfaces)
-- [Baeldung – Abstract Classes](https://www.baeldung.com/java-abstract-class)
-- [Oracle Tutorial – Object-Oriented Programming Concepts](https://docs.oracle.com/javase/tutorial/java/concepts/index.html)
+- [Baeldung – Classes and Objects](https://www.baeldung.com/java-classes-objects){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Inheritance and Composition](https://www.baeldung.com/java-inheritance-composition){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Interfaces](https://www.baeldung.com/java-interfaces){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Abstract Classes](https://www.baeldung.com/java-abstract-class){:target="_blank" rel="noopener noreferrer"}
+- [Oracle Tutorial – Object-Oriented Programming Concepts](https://docs.oracle.com/javase/tutorial/java/concepts/index.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/01-java-fundamentals" class="btn btn-secondary">← Previous: Java Fundamentals</a>
+<a href="{{ '/docs/01-java-fundamentals' | relative_url }}" class="btn btn-secondary">← Previous: Java Fundamentals</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/03-modern-java" class="btn">Next: Modern Java →</a>
+<a href="{{ '/docs/03-modern-java' | relative_url }}" class="btn">Next: Modern Java →</a>
 </div>

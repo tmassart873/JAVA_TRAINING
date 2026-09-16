@@ -503,14 +503,14 @@ A: Hash collision. HashMap stores them in the same bucket and uses equals() to d
 
 ## Further Reading
 
-- [Baeldung – equals() and hashCode()](https://www.baeldung.com/java-equals-hashcode-contracts)
-- [Baeldung – Comparing Objects](https://www.baeldung.com/java-comparing-objects)
-- [Oracle – Object.equals()](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object))
+- [Baeldung – equals() and hashCode()](https://www.baeldung.com/java-equals-hashcode-contracts){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Comparing Objects](https://www.baeldung.com/java-comparing-objects){:target="_blank" rel="noopener noreferrer"}
+- [Oracle – Object.equals()](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/03-modern-java" class="btn btn-secondary">← Previous: Modern Java</a>
+<a href="{{ '/docs/03-modern-java' | relative_url }}" class="btn btn-secondary">← Previous: Modern Java</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/05-collections-generics" class="btn">Next: Collections & Generics →</a>
+<a href="{{ '/docs/05-collections-generics' | relative_url }}" class="btn">Next: Collections & Generics →</a>
 </div>

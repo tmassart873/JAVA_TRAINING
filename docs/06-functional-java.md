@@ -389,15 +389,15 @@ stream.count();  // IllegalStateException – stream already consumed
 
 ## Further Reading
 
-- [Baeldung – Streams](https://www.baeldung.com/java-8-streams)
-- [Baeldung – Collectors](https://www.baeldung.com/java-collectors)
-- [Baeldung – Functional Interfaces](https://www.baeldung.com/java-8-functional-interfaces)
-- [Oracle Stream API Tutorial](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html)
+- [Baeldung – Streams](https://www.baeldung.com/java-8-streams){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Collectors](https://www.baeldung.com/java-collectors){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Functional Interfaces](https://www.baeldung.com/java-8-functional-interfaces){:target="_blank" rel="noopener noreferrer"}
+- [Oracle Stream API Tutorial](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/stream/Stream.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/05-collections-generics" class="btn btn-secondary">← Previous: Collections & Generics</a>
+<a href="{{ '/docs/05-collections-generics' | relative_url }}" class="btn btn-secondary">← Previous: Collections & Generics</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/07-strings" class="btn">Next: Strings →</a>
+<a href="{{ '/docs/07-strings' | relative_url }}" class="btn">Next: Strings →</a>
 </div>

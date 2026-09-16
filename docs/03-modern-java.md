@@ -514,17 +514,17 @@ String json = """
 
 ## Further Reading
 
-- [Baeldung – Records](https://www.baeldung.com/java-record-keyword)
-- [Baeldung – Sealed Classes](https://www.baeldung.com/java-sealed-classes-interfaces)
-- [Baeldung – Enums](https://www.baeldung.com/a-guide-to-java-enums)
-- [Baeldung – Optional](https://www.baeldung.com/java-optional)
-- [Baeldung – Switch Pattern Matching](https://www.baeldung.com/java-switch-pattern-matching)
-- [Oracle – Pattern Matching](https://docs.oracle.com/en/java/javase/21/language/pattern-matching.html)
+- [Baeldung – Records](https://www.baeldung.com/java-record-keyword){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Sealed Classes](https://www.baeldung.com/java-sealed-classes-interfaces){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Enums](https://www.baeldung.com/a-guide-to-java-enums){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Optional](https://www.baeldung.com/java-optional){:target="_blank" rel="noopener noreferrer"}
+- [Baeldung – Switch Pattern Matching](https://www.baeldung.com/java-switch-pattern-matching){:target="_blank" rel="noopener noreferrer"}
+- [Oracle – Pattern Matching](https://docs.oracle.com/en/java/javase/21/language/pattern-matching.html){:target="_blank" rel="noopener noreferrer"}
 
 ---
 
 <div class="chapter-nav">
-<a href="/docs/02-object-oriented-java" class="btn btn-secondary">← Previous: OOP</a>
+<a href="{{ '/docs/02-object-oriented-java' | relative_url }}" class="btn btn-secondary">← Previous: OOP</a>
 <div class="chapter-nav-spacer"></div>
-<a href="/docs/04-equals-hashcode" class="btn">Next: equals() & hashCode() →</a>
+<a href="{{ '/docs/04-equals-hashcode' | relative_url }}" class="btn">Next: equals() & hashCode() →</a>
 </div>
