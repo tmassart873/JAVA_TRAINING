@@ -1,0 +1,44 @@
+# Course structure for the sidebar navigation, progress tracking and
+# previous/next lesson links. Each lesson's "doc" must match the filename
+# (without extension) of a file in /docs.
+sections:
+  - title: "Foundations"
+    lessons:
+      - doc: "01-java-fundamentals"
+        label: "Java Fundamentals"
+      - doc: "02-object-oriented-java"
+        label: "Object-Oriented Java"
+      - doc: "03-modern-java"
+        label: "Modern Java (17+)"
+      - doc: "04-equals-hashcode"
+        label: "equals() & hashCode()"
+
+  - title: "Collections & Data"
+    lessons:
+      - doc: "05-collections-generics"
+        label: "Collections & Generics"
+      - doc: "06-functional-java"
+        label: "Functional Java & Streams"
+
+  - title: "Language Features"
+    lessons:
+      - doc: "07-strings"
+        label: "Strings"
+      - doc: "08-exceptions"
+        label: "Exceptions"
+      - doc: "09-java-io"
+        label: "Java IO"
+
+  - title: "The JVM"
+    lessons:
+      - doc: "10-jvm-fundamentals"
+        label: "JVM Fundamentals"
+
+  - title: "Practice & Reference"
+    lessons:
+      - doc: "11-exercises"
+        label: "Practical Exercises"
+      - doc: "12-interview-questions"
+        label: "Interview Questions"
+      - doc: "13-references"
+        label: "References"

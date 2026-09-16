@@ -3,6 +3,16 @@ layout: default
 title: Exceptions
 subtitle: Exception hierarchy, handling, and best practices
 type: docs
+quiz:
+  - question: "Checked exceptions must be handled how?"
+    options: ["They can be silently ignored", "Declared with throws or caught with try-catch", "Only caught in the main method", "They cannot be caught at all"]
+    answer: 1
+  - question: "What must a class implement to be used in try-with-resources?"
+    options: ["Serializable", "AutoCloseable", "Comparable", "Runnable"]
+    answer: 1
+  - question: "Is RuntimeException checked or unchecked?"
+    options: ["Checked", "Unchecked", "Neither, it's abstract", "It depends on the JVM version"]
+    answer: 1
 ---
 
 ## Exception Hierarchy

@@ -1,22 +1,9 @@
-<nav aria-label="Main navigation">
-    <div class="nav-container">
-        <a href="{{ '/' | relative_url }}" class="nav-brand">AXXES JAVA</a>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navMenu">☰</button>
-        <ul class="nav-menu" id="navMenu">
-            <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active" aria-current="page"{% endif %}>HOME</a></li>
-            <li><a href="{{ '/docs/01-java-fundamentals' | relative_url }}" {% if page.url contains '01-java-fundamentals' %}class="active" aria-current="page"{% endif %}>FUNDAMENTALS</a></li>
-            <li><a href="{{ '/docs/02-object-oriented-java' | relative_url }}" {% if page.url contains '02-object-oriented-java' %}class="active" aria-current="page"{% endif %}>OOP</a></li>
-            <li><a href="{{ '/docs/03-modern-java' | relative_url }}" {% if page.url contains '03-modern-java' %}class="active" aria-current="page"{% endif %}>MODERN JAVA</a></li>
-            <li><a href="{{ '/docs/04-equals-hashcode' | relative_url }}" {% if page.url contains '04-equals-hashcode' %}class="active" aria-current="page"{% endif %}>EQUALS/HASHCODE</a></li>
-            <li><a href="{{ '/docs/05-collections-generics' | relative_url }}" {% if page.url contains '05-collections-generics' %}class="active" aria-current="page"{% endif %}>COLLECTIONS</a></li>
-            <li><a href="{{ '/docs/06-functional-java' | relative_url }}" {% if page.url contains '06-functional-java' %}class="active" aria-current="page"{% endif %}>STREAMS</a></li>
-            <li><a href="{{ '/docs/07-strings' | relative_url }}" {% if page.url contains '07-strings' %}class="active" aria-current="page"{% endif %}>STRINGS</a></li>
-            <li><a href="{{ '/docs/08-exceptions' | relative_url }}" {% if page.url contains '08-exceptions' %}class="active" aria-current="page"{% endif %}>EXCEPTIONS</a></li>
-            <li><a href="{{ '/docs/09-java-io' | relative_url }}" {% if page.url contains '09-java-io' %}class="active" aria-current="page"{% endif %}>IO</a></li>
-            <li><a href="{{ '/docs/10-jvm-fundamentals' | relative_url }}" {% if page.url contains '10-jvm-fundamentals' %}class="active" aria-current="page"{% endif %}>JVM</a></li>
-            <li><a href="{{ '/docs/11-exercises' | relative_url }}" {% if page.url contains '11-exercises' %}class="active" aria-current="page"{% endif %}>EXERCISES</a></li>
-            <li><a href="{{ '/docs/12-interview-questions' | relative_url }}" {% if page.url contains '12-interview-questions' %}class="active" aria-current="page"{% endif %}>INTERVIEW Q</a></li>
-            <li><a href="{{ '/docs/13-references' | relative_url }}" {% if page.url contains '13-references' %}class="active" aria-current="page"{% endif %}>REFERENCES</a></li>
-        </ul>
-    </div>
-</nav>
+<header class="mobile-topbar">
+    <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Open course navigation" aria-expanded="false" aria-controls="courseSidebar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <a href="{{ '/' | relative_url }}" class="mobile-brand">
+        <span aria-hidden="true">☕</span> Java Refresher
+    </a>
+    <span class="mobile-topbar-spacer" aria-hidden="true"></span>
+</header>

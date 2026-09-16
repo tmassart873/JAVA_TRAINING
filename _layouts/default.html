@@ -3,71 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ page.description | default: site.description }}">
+    <meta name="description" content="{{ page.description | default: page.subtitle | default: site.description }}">
     <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
-    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="{{ '/assets/css/style.css' | relative_url }}" rel="stylesheet">
 </head>
 <body>
-    <div class="page-wrapper">
-        <!-- Navigation -->
+{% comment %}
+  Flatten site.data.course into parallel pipe-delimited lists so we can compute
+  previous/next lesson links and breadcrumb context without a plugin.
+{% endcomment %}
+{% assign slug_str = "" %}
+{% assign label_str = "" %}
+{% assign section_str = "" %}
+{% for section in site.data.course.sections %}
+    {% for lesson in section.lessons %}
+        {% assign slug_str = slug_str | append: lesson.doc | append: "|" %}
+        {% assign label_str = label_str | append: lesson.label | append: "|" %}
+        {% assign section_str = section_str | append: section.title | append: "|" %}
+    {% endfor %}
+{% endfor %}
+{% assign lesson_slugs = slug_str | split: "|" %}
+{% assign lesson_labels = label_str | split: "|" %}
+{% assign lesson_sections = section_str | split: "|" %}
+{% assign lesson_count = lesson_slugs | size %}
+
+{% assign current_index = -1 %}
+{% if page.type == "docs" %}
+    {% for slug in lesson_slugs %}
+        {% assign candidate_url = "/docs/" | append: slug | append: "/" %}
+        {% if candidate_url == page.url %}
+            {% assign current_index = forloop.index0 %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% assign has_prev = false %}
+{% assign has_next = false %}
+{% if current_index > 0 %}
+    {% assign has_prev = true %}
+    {% assign prev_index = current_index | minus: 1 %}
+    {% assign prev_slug = lesson_slugs[prev_index] %}
+    {% assign prev_label = lesson_labels[prev_index] %}
+{% endif %}
+{% assign last_index = lesson_count | minus: 1 %}
+{% if current_index > -1 and current_index < last_index %}
+    {% assign has_next = true %}
+    {% assign next_index = current_index | plus: 1 %}
+    {% assign next_slug = lesson_slugs[next_index] %}
+    {% assign next_label = lesson_labels[next_index] %}
+{% endif %}
+
+{% assign current_slug = "" %}
+{% assign current_section = "" %}
+{% if current_index > -1 %}
+    {% assign current_slug = lesson_slugs[current_index] %}
+    {% assign current_section = lesson_sections[current_index] %}
+{% endif %}
+
+{% assign word_count = content | strip_html | number_of_words %}
+{% assign reading_time = word_count | divided_by: 200 %}
+{% assign reading_remainder = word_count | modulo: 200 %}
+{% if reading_remainder > 0 or reading_time == 0 %}
+    {% assign reading_time = reading_time | plus: 1 %}
+{% endif %}
+
+<div class="app-shell" data-total-lessons="{{ lesson_count }}">
+    {% include sidebar.html %}
+
+    <div class="app-main">
         {% include navigation.html %}
 
-        <!-- Main content -->
-        <main>
-            {% if page.layout == 'default' and page.type == 'docs' %}
-                <div class="page-header">
-                    <div class="container">
-                        <h1>{{ page.title }}</h1>
-                        {% if page.subtitle %}
-                            <p class="page-subtitle">{{ page.subtitle }}</p>
+        <main class="lesson-main" id="mainContent" tabindex="-1">
+            {% if page.type == "docs" %}
+                <div class="lesson-container">
+                    <nav class="breadcrumb" aria-label="Breadcrumb">
+                        <a href="{{ '/' | relative_url }}">Home</a>
+                        <span class="breadcrumb-sep" aria-hidden="true">/</span>
+                        {% if current_section != "" %}
+                            <span>{{ current_section }}</span>
+                            <span class="breadcrumb-sep" aria-hidden="true">/</span>
                         {% endif %}
+                        <span aria-current="page">{{ page.title }}</span>
+                    </nav>
+
+                    <header class="lesson-header">
+                        <p class="lesson-meta">{{ reading_time }} min read</p>
+                        <h1>{{ page.title }}</h1>
+                        {% if page.subtitle %}<p class="lesson-subtitle">{{ page.subtitle }}</p>{% endif %}
+                    </header>
+
+                    <div class="lesson-content">
+                        {{ content }}
                     </div>
+
+                    {% if page.quiz and page.quiz.size > 0 %}
+                        <section class="quiz-card" id="quizCard" data-quiz="{{ page.quiz | jsonify | escape }}">
+                            <div class="quiz-intro" id="quizIntro">
+                                <div class="quiz-intro-icon" aria-hidden="true">?</div>
+                                <div class="quiz-intro-text">
+                                    <h2>Quick Quiz</h2>
+                                    <p>Test your understanding of this lesson.</p>
+                                </div>
+                                <button type="button" class="btn quiz-start-btn" id="quizStartBtn">Start Quiz</button>
+                            </div>
+                            <div class="quiz-body" id="quizBody" hidden></div>
+                        </section>
+                    {% endif %}
+
+                    <div class="lesson-complete-row">
+                        <button type="button" class="mark-complete-btn" id="markCompleteBtn" data-lesson="{{ current_slug }}" aria-pressed="false">
+                            <svg class="mark-complete-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <span class="mark-complete-text">Mark as complete</span>
+                        </button>
+                    </div>
+
+                    <nav class="chapter-nav" aria-label="Lesson navigation">
+                        {% if has_prev %}
+                            <a href="{{ '/docs/' | append: prev_slug | append: '/' | relative_url }}" class="chapter-nav-link prev">
+                                <span class="chapter-nav-arrow" aria-hidden="true">←</span>
+                                <span class="chapter-nav-copy"><small>Previous</small><strong>{{ prev_label }}</strong></span>
+                            </a>
+                        {% else %}
+                            <span class="chapter-nav-spacer"></span>
+                        {% endif %}
+                        {% if has_next %}
+                            <a href="{{ '/docs/' | append: next_slug | append: '/' | relative_url }}" class="chapter-nav-link next">
+                                <span class="chapter-nav-copy"><small>Next Lesson</small><strong>{{ next_label }}</strong></span>
+                                <span class="chapter-nav-arrow" aria-hidden="true">→</span>
+                            </a>
+                        {% else %}
+                            <span class="chapter-nav-spacer"></span>
+                        {% endif %}
+                    </nav>
+
+                    <p class="lesson-footer-note">&copy; {{ site.time | date: "%Y" }} {{ site.author.name }}. Based on Baeldung Java tutorials and official Oracle Java documentation.</p>
                 </div>
+            {% else %}
+                <div class="page-container">
+                    {{ content }}
+                </div>
+
+                <footer class="site-footer">
+                    <div class="footer-content">
+                        <div class="footer-section">
+                            <h4>Foundations</h4>
+                            <a href="{{ '/docs/01-java-fundamentals' | relative_url }}">Java Fundamentals</a>
+                            <a href="{{ '/docs/02-object-oriented-java' | relative_url }}">Object-Oriented Java</a>
+                            <a href="{{ '/docs/03-modern-java' | relative_url }}">Modern Java</a>
+                            <a href="{{ '/docs/04-equals-hashcode' | relative_url }}">equals() & hashCode()</a>
+                        </div>
+                        <div class="footer-section">
+                            <h4>More Modules</h4>
+                            <a href="{{ '/docs/06-functional-java' | relative_url }}">Functional Java</a>
+                            <a href="{{ '/docs/07-strings' | relative_url }}">Strings</a>
+                            <a href="{{ '/docs/08-exceptions' | relative_url }}">Exceptions</a>
+                            <a href="{{ '/docs/10-jvm-fundamentals' | relative_url }}">JVM Fundamentals</a>
+                        </div>
+                        <div class="footer-section">
+                            <h4>Resources</h4>
+                            <a href="{{ '/docs/11-exercises' | relative_url }}">Exercises</a>
+                            <a href="{{ '/docs/12-interview-questions' | relative_url }}">Interview Questions</a>
+                            <a href="{{ '/docs/13-references' | relative_url }}">References</a>
+                            <a href="https://www.axxes.com" target="_blank" rel="noopener noreferrer">Axxes Website</a>
+                        </div>
+                        <div class="footer-section">
+                            <h4>About</h4>
+                            <p>An interactive Java refresher course for developers at Axxes, based on modern Java 21 best practices.</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; {{ site.time | date: "%Y" }} Axxes. Java Refresher Training. All rights reserved.</p>
+                    </div>
+                </footer>
             {% endif %}
-
-            <div class="container">
-                {{ content }}
-            </div>
         </main>
-
-        <!-- Footer -->
-        <footer>
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Training Modules</h4>
-                    <a href="{{ '/docs/01-java-fundamentals' | relative_url }}">Java Fundamentals</a>
-                    <a href="{{ '/docs/02-object-oriented-java' | relative_url }}">OOP Java</a>
-                    <a href="{{ '/docs/03-modern-java' | relative_url }}">Modern Java</a>
-                    <a href="{{ '/docs/04-equals-hashcode' | relative_url }}">equals() & hashCode()</a>
-                    <a href="{{ '/docs/05-collections-generics' | relative_url }}">Collections</a>
-                </div>
-                <div class="footer-section">
-                    <h4>More Modules</h4>
-                    <a href="{{ '/docs/06-functional-java' | relative_url }}">Functional Java</a>
-                    <a href="{{ '/docs/07-strings' | relative_url }}">Strings</a>
-                    <a href="{{ '/docs/08-exceptions' | relative_url }}">Exceptions</a>
-                    <a href="{{ '/docs/09-java-io' | relative_url }}">Java IO</a>
-                    <a href="{{ '/docs/10-jvm-fundamentals' | relative_url }}">JVM</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Resources</h4>
-                    <a href="{{ '/docs/11-exercises' | relative_url }}">Exercises</a>
-                    <a href="{{ '/docs/12-interview-questions' | relative_url }}">Interview Questions</a>
-                    <a href="{{ '/docs/13-references' | relative_url }}">References</a>
-                    <a href="https://www.axxes.com" target="_blank" rel="noopener noreferrer">Axxes Website</a>
-                </div>
-                <div class="footer-section">
-                    <h4>About</h4>
-                    <p>A comprehensive Java refresher course designed for developers at Axxes. Based on modern Java 21 best practices.</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Axxes. Java Refresher Training. All rights reserved.</p>
-                <p style="font-size: 0.9rem; margin-top: 0.5em;">Based on Baeldung Java tutorials and official Oracle Java documentation.</p>
-            </div>
-        </footer>
     </div>
+</div>
 
-    <script src="{{ '/assets/js/navigation.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/navigation.js' | relative_url }}"></script>
 </body>
 </html>

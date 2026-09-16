@@ -3,6 +3,13 @@ layout: default
 title: References & Resources
 subtitle: Baeldung articles, official documentation, and further reading
 type: docs
+quiz:
+  - question: "What are the primary sources this course is built on?"
+    options: ["Random blog posts", "Baeldung tutorials and official Oracle/OpenJDK documentation", "Unofficial forum threads only", "This course invents all content from scratch"]
+    answer: 1
+  - question: "Why does each module link back to further reading?"
+    options: ["To pad the page length", "To let you dive deeper into topics that interest you", "It's required by Jekyll", "To replace the lesson content"]
+    answer: 1
 ---
 
 ## Java Language Basics

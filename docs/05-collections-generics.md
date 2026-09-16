@@ -3,6 +3,16 @@ layout: default
 title: Collections & Generics
 subtitle: Lists, Sets, Maps, and type-safe data structures
 type: docs
+quiz:
+  - question: "Which collection type does not allow duplicate elements?"
+    options: ["List", "Set", "Map", "Queue"]
+    answer: 1
+  - question: "Which collection stores data as key-value pairs?"
+    options: ["List", "Set", "Map", "Deque"]
+    answer: 2
+  - question: "What is the main benefit of the diamond operator (<>)?"
+    options: ["It enables multiple inheritance", "It lets the compiler infer the generic type", "It removes the need for interfaces", "It boosts runtime performance"]
+    answer: 1
 ---
 
 ## Collections Hierarchy

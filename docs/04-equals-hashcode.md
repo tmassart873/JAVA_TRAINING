@@ -3,6 +3,16 @@ layout: default
 title: equals() & hashCode()
 subtitle: Understanding the object contract and HashMap/HashSet behavior
 type: docs
+quiz:
+  - question: "What does == compare for two objects (not primitives)?"
+    options: ["Their field values", "Their reference identity", "Their hashCode() output", "Their class name"]
+    answer: 1
+  - question: "If two objects are equal according to equals(), what must also be true?"
+    options: ["They must be the same object in memory", "They must have the same hashCode()", "They must belong to different classes", "Nothing else is required"]
+    answer: 1
+  - question: "What typically breaks if you override equals() but not hashCode()?"
+    options: ["Nothing, it's fine", "String concatenation", "Correct behavior in HashMap/HashSet", "The compiler will refuse to build"]
+    answer: 2
 ---
 
 ## Why This Matters

@@ -3,6 +3,16 @@ layout: default
 title: Modern Java (17+)
 subtitle: Records, sealed classes, pattern matching, and Java 21 features
 type: docs
+quiz:
+  - question: "What does a record automatically generate for you?"
+    options: ["A database schema", "equals(), hashCode(), toString() and accessors", "Getters that can be overridden freely", "Nothing, it's just syntax sugar for interfaces"]
+    answer: 1
+  - question: "What do sealed classes let you restrict?"
+    options: ["Which methods can be called", "Which classes may extend or implement them", "How many instances can be created", "Which packages can import them"]
+    answer: 1
+  - question: "What is Optional primarily used to avoid?"
+    options: ["ClassCastException", "NullPointerException", "ArrayIndexOutOfBoundsException", "StackOverflowError"]
+    answer: 1
 ---
 
 ## Table of Contents

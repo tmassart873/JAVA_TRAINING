@@ -1,0 +1,67 @@
+<aside class="course-sidebar" id="courseSidebar" aria-label="Course navigation">
+    <div class="sidebar-inner">
+        <a href="{{ '/' | relative_url }}" class="course-brand">
+            <span class="course-brand-icon" aria-hidden="true">☕</span>
+            <span class="course-brand-text">
+                <span class="course-brand-name">Java Refresher</span>
+                <span class="course-brand-tag">Beginner Course</span>
+            </span>
+        </a>
+
+        <div class="sidebar-progress">
+            <div class="sidebar-progress-label">
+                <span>Your Progress</span>
+                <span id="sidebarProgressPercent">0%</span>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Course completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="sidebarProgressBar">
+                <div class="progress-fill" id="sidebarProgressFill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Course lessons">
+            {% assign section_number = 0 %}
+            {% for section in site.data.course.sections %}
+                {% assign section_number = section_number | plus: 1 %}
+                {% assign section_has_active = false %}
+                {% for lesson in section.lessons %}
+                    {% assign lesson_url = "/docs/" | append: lesson.doc | append: "/" %}
+                    {% if page.url == lesson_url %}{% assign section_has_active = true %}{% endif %}
+                {% endfor %}
+                {% assign section_open = false %}
+                {% if section_has_active %}{% assign section_open = true %}{% endif %}
+                {% if page.type != "docs" and forloop.first %}{% assign section_open = true %}{% endif %}
+                <details class="sidebar-section" {% if section_open %}open{% endif %}>
+                    <summary class="sidebar-section-title">
+                        <span class="sidebar-section-number">{{ section_number }}</span>
+                        <span class="sidebar-section-name">{{ section.title }}</span>
+                        <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </summary>
+                    <ul class="sidebar-lesson-list">
+                        {% for lesson in section.lessons %}
+                            {% assign lesson_url = "/docs/" | append: lesson.doc | append: "/" %}
+                            {% assign is_active = false %}
+                            {% if page.url == lesson_url %}{% assign is_active = true %}{% endif %}
+                            <li>
+                                <a href="{{ lesson_url | relative_url }}"
+                                   class="sidebar-lesson{% if is_active %} active{% endif %}"
+                                   data-lesson="{{ lesson.doc }}"
+                                   {% if is_active %}aria-current="page"{% endif %}>
+                                    <span class="lesson-status" aria-hidden="true"></span>
+                                    <span class="lesson-label">{{ lesson.label }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </details>
+            {% endfor %}
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="https://github.com/tmassart873/JAVA_TRAINING" target="_blank" rel="noopener noreferrer" class="sidebar-github-link">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                <span>View on GitHub</span>
+            </a>
+        </div>
+    </div>
+</aside>
+<button type="button" class="sidebar-overlay" id="sidebarOverlay" aria-label="Close course navigation" tabindex="-1"></button>

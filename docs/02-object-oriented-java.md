@@ -3,6 +3,16 @@ layout: default
 title: Object-Oriented Java
 subtitle: Classes, objects, inheritance, polymorphism, and design patterns
 type: docs
+quiz:
+  - question: "Which access modifier restricts a member to its own class only?"
+    options: ["public", "protected", "private", "default"]
+    answer: 2
+  - question: "Which keyword lets a class inherit from another class?"
+    options: ["implements", "extends", "inherits", "super"]
+    answer: 1
+  - question: "What is the main purpose of encapsulation?"
+    options: ["Allowing multiple inheritance", "Hiding internal state and exposing controlled access", "Speeding up compilation", "Preventing method overriding"]
+    answer: 1
 ---
 
 ## Table of Contents

@@ -3,6 +3,13 @@ layout: default
 title: Practical Exercises
 subtitle: Hands-on coding exercises from basic to advanced
 type: docs
+quiz:
+  - question: "Before checking a solution, what's the recommended approach for these exercises?"
+    options: ["Skip straight to the answer", "Attempt to write and run the code yourself first", "Only read the problem statement", "Memorize the solution"]
+    answer: 1
+  - question: "What do the difficulty badges (🟢 🟡 🔴) on each exercise indicate?"
+    options: ["The estimated file size", "The exercise's relative difficulty", "The Java version required", "The number of test cases"]
+    answer: 1
 ---
 
 ## Exercise 1: Customer Management System 🟢 Basic

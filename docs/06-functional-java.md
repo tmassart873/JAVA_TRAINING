@@ -3,6 +3,16 @@ layout: default
 title: Functional Java & Streams
 subtitle: Lambda expressions, functional interfaces, and Stream API
 type: docs
+quiz:
+  - question: "How many abstract methods does a functional interface have?"
+    options: ["Zero", "Exactly one", "Two or more", "As many as needed"]
+    answer: 1
+  - question: "When do intermediate stream operations like map() and filter() actually run?"
+    options: ["Immediately when called", "Only when a terminal operation is invoked", "At compile time", "Never, they are just declarations"]
+    answer: 1
+  - question: "What happens if you try to reuse a stream after a terminal operation has consumed it?"
+    options: ["It resets automatically", "It throws an IllegalStateException", "It silently returns an empty stream", "It runs twice as fast"]
+    answer: 1
 ---
 
 ## Functional Interfaces

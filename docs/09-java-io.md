@@ -3,6 +3,16 @@ layout: default
 title: Java IO
 subtitle: Reading, writing, streams, and file operations
 type: docs
+quiz:
+  - question: "Which modern package provides NIO2 file operations?"
+    options: ["java.io", "java.nio.file", "java.util.file", "java.stream.io"]
+    answer: 1
+  - question: "Which class is commonly used to read input from the console?"
+    options: ["Scanner", "FileWriter", "ObjectOutputStream", "BufferedImage"]
+    answer: 0
+  - question: "What's the key difference between byte streams and character streams?"
+    options: ["Byte streams are always faster", "Character streams handle text encoding, byte streams handle raw bytes", "There is no difference", "Character streams cannot read files"]
+    answer: 1
 ---
 
 ## Reading User Input

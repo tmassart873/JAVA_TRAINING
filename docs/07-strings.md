@@ -3,6 +3,16 @@ layout: default
 title: Strings
 subtitle: String immutability, the String pool, and string operations
 type: docs
+quiz:
+  - question: "Once created, can the contents of a String object be changed?"
+    options: ["Yes, always", "No, Strings are immutable", "Only with reflection", "Only inside the same package"]
+    answer: 1
+  - question: "Which class should you use to build a string efficiently in a loop?"
+    options: ["String", "StringBuilder", "StringPool", "CharArray"]
+    answer: 1
+  - question: "What is the correct way to compare the content of two Strings?"
+    options: ["Using ==", "Using .equals()", "Using instanceof", "Using .hashCode() == .hashCode()"]
+    answer: 1
 ---
 
 ## String Immutability

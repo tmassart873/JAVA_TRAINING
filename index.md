@@ -5,8 +5,8 @@ description: A comprehensive Java knowledge base for modern software developers
 ---
 
 <div class="hero">
-    <h1>JAVA REFRESHER</h1>
-    <p class="hero-subtitle">A comprehensive knowledge base for modern software developers</p>
+    <h1>Java Refresher</h1>
+    <p class="hero-subtitle">An interactive course for modern software developers at Axxes</p>
     <p class="hero-tags">Java 21 • Modern best practices • Enterprise development • Microservices</p>
 </div>
 

@@ -3,6 +3,16 @@ layout: default
 title: JVM Fundamentals
 subtitle: Understanding the Java Virtual Machine, bytecode, memory, and execution
 type: docs
+quiz:
+  - question: "Where are objects allocated in the JVM's memory model?"
+    options: ["The stack", "The heap", "The metaspace only", "The CPU cache"]
+    answer: 1
+  - question: "What is stored on the stack for each method call?"
+    options: ["All objects created in the app", "Local variables and call frames", "The entire class file", "Garbage collection logs"]
+    answer: 1
+  - question: "What is the process of reclaiming memory used by unreachable objects called?"
+    options: ["Class loading", "JIT compilation", "Garbage collection", "Bytecode verification"]
+    answer: 2
 ---
 
 ## The JVM Execution Pipeline

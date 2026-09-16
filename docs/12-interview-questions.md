@@ -3,6 +3,13 @@ layout: default
 title: Java Interview Questions
 subtitle: 50+ technical questions and detailed answers
 type: docs
+quiz:
+  - question: "What's the best way to use this chapter before a technical interview?"
+    options: ["Memorize answers word for word", "Read them once and move on", "Explain each answer in your own words until it's fluent", "Skip topics you already studied elsewhere"]
+    answer: 2
+  - question: "Which of these topics is covered alongside core Java concepts here?"
+    options: ["Only syntax trivia", "Collections, Generics, Strings, Exceptions and functional programming", "Only database questions", "Only design patterns"]
+    answer: 1
 ---
 
 ## Core Java Concepts
